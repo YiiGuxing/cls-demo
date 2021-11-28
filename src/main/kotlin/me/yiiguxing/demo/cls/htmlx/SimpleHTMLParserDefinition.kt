@@ -33,7 +33,7 @@ class SimpleHTMLParserDefinition : ParserDefinition {
         val FILE = IFileElementType(SimpleHTMLLanguage)
 
         val STRING_LITERALS = TokenSet.create(TEXT, COMMENT_TEXT, ROW_TEXT)
-        val COMMENTS = TokenSet.create(COMMENT)
+        val COMMENTS = TokenSet.create(COMMENT_START, COMMENT_END, COMMENT_TEXT, COMMENT)
     }
 
 }
