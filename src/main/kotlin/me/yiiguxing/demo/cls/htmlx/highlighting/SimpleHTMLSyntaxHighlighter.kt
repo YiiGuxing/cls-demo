@@ -14,7 +14,6 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer = SimpleHTMLLexerAdapter()
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
-        println(tokenType)
         return pack(SimpleHTMLHighlighterColors.DEFAULT_CODE, keyMap[tokenType].toTypedArray())
     }
 
