@@ -1,0 +1,40 @@
+{
+  parserClass="me.yiiguxing.demo.cls.htmlx.parser.SimpleHTMLParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="SimpleHTML"
+  psiImplClassSuffix="Impl"
+  psiPackage="me.yiiguxing.demo.cls.htmlx.psi"
+  psiImplPackage="me.yiiguxing.demo.cls.htmlx.psi.impl"
+
+  elementTypeHolderClass="me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes"
+  elementTypeClass="me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElementType"
+  tokenTypeClass="me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTokenType"
+
+  tokens=[
+    TAG_START='<'
+    TAG_END='>'
+    END_TAG_START='</'
+    EMPTY_TAG_END='/>'
+    EQ='='
+    COMMENT_START='<!--'
+    COMMENT_END='-->'
+    ATTRIBUTE_VALUE_DEFINER_SQ="'"
+    ATTRIBUTE_VALUE_DEFINER_DQ='"'
+    DOCTYPE='<!DOCTYPE html>'
+  ]
+}
+
+SimpleHTMLFile ::= DOCTYPE? (Tag|Comment)*
+
+Tag ::= NotEmptyTag|EmptyTag
+private NotEmptyTag ::= TagStart (Tag|Comment|Text)* TagEnd {pin=1}
+private EmptyTag ::= TagHead '/>'
+private TagStart ::= TagHead '>'
+private TagHead ::= '<' TAG_NAME Attribute* {pin=1}
+private TagEnd ::= '</' TAG_NAME '>' {pin=1}
+Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {pin=1}
+AttributeValue ::= '"' ATTR_VALUE? '"' | "'" ATTR_VALUE? "'"
+Text ::= ROW_TEXT+
+
+Comment ::= '<!--' COMMENT_TEXT? '-->'  {pin=1}

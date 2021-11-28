@@ -1,0 +1,27 @@
+<idea-plugin>
+
+    <id>me.yiiguxing.demo.cls.htmlx</id>
+    <name>Simple HTML Support</name>
+    <vendor email="yii.guxing@gmail.com" url="https://github.com/YiiGuxing">Yii.Guxing</vendor>
+
+    <description>
+        <![CDATA[Simple HTML Support]]>
+    </description>
+    <change-notes>
+        <![CDATA[]]>
+    </change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Simple HTML File"
+                  implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLFileType"
+                  fieldName="INSTANCE"
+                  language="SimpleHTML"
+                  extensions="htmlx"/>
+        <lang.parserDefinition language="SimpleHTML"
+                               implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLParserDefinition"/>
+
+    </extensions>
+
+</idea-plugin>
