@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public class SimpleHTMLAttributeImpl extends ASTWrapperPsiElement implements SimpleHTMLAttribute {
+public class SimpleHTMLAttributeImpl extends SimpleHTMLElementBase implements SimpleHTMLAttribute {
 
   public SimpleHTMLAttributeImpl(@NotNull ASTNode node) {
     super(node);

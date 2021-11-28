@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface SimpleHTMLTag extends PsiElement {
+public interface SimpleHTMLTag extends SimpleHTMLElement {
 
   @NotNull
   List<SimpleHTMLAttribute> getAttributeList();

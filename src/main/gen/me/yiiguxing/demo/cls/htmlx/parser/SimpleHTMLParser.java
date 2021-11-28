@@ -158,13 +158,14 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   static boolean NotEmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NotEmptyTag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = TagStart(b, l + 1);
-    r = r && NotEmptyTag_1(b, l + 1);
-    r = r && TagEnd(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, NotEmptyTag_1(b, l + 1));
+    r = p && TagEnd(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   // (Tag|Comment|Text)*

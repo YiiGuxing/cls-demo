@@ -3,32 +3,33 @@ package me.yiiguxing.demo.cls.htmlx.psi;
 
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiComment;
 
 public class SimpleHTMLVisitor extends PsiElementVisitor {
 
   public void visitAttribute(@NotNull SimpleHTMLAttribute o) {
-    visitPsiElement(o);
+    visitElement(o);
   }
 
   public void visitAttributeValue(@NotNull SimpleHTMLAttributeValue o) {
-    visitPsiElement(o);
+    visitElement(o);
   }
 
   public void visitComment(@NotNull SimpleHTMLComment o) {
-    visitPsiElement(o);
+    visitElement(o);
+    // visitPsiComment(o);
   }
 
   public void visitTag(@NotNull SimpleHTMLTag o) {
-    visitPsiElement(o);
+    visitElement(o);
   }
 
   public void visitText(@NotNull SimpleHTMLText o) {
-    visitPsiElement(o);
+    visitElement(o);
   }
 
-  public void visitPsiElement(@NotNull PsiElement o) {
-    visitElement(o);
+  public void visitElement(@NotNull SimpleHTMLElement o) {
+    super.visitElement(o);
   }
 
 }
