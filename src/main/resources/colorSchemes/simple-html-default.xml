@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<list>
+    <option name="HTMLX_ATTRIBUTE_ASSIGN">
+        <value>
+            <option name="FOREGROUND" value="c262c4"/>
+        </value>
+    </option>
+    <option name="HTMLX_ATTRIBUTE_NAME">
+        <value>
+            <option name="FOREGROUND" value="8250df"/>
+        </value>
+    </option>
+    <option name="HTMLX_ATTRIBUTE_VALUE">
+        <value>
+            <option name="FOREGROUND" value="2e6fd9"/>
+        </value>
+    </option>
+    <option name="HTMLX_CODE">
+        <value>
+            <option name="FOREGROUND" value="24292f"/>
+        </value>
+    </option>
+    <option name="HTMLX_TAG">
+        <value>
+            <option name="FOREGROUND" value="67d17"/>
+        </value>
+    </option>
+</list>

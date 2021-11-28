@@ -19,8 +19,15 @@
                   fieldName="INSTANCE"
                   language="SimpleHTML"
                   extensions="htmlx"/>
-        <lang.parserDefinition language="SimpleHTML"
-                               implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLParserDefinition"/>
+        <lang.parserDefinition
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="me.yiiguxing.demo.cls.htmlx.ui.SimpleHTMLColorSettingsPage"/>
+        <additionalTextAttributes scheme="Default" file="colorSchemes/simple-html-default.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colorSchemes/simple-html-darcula.xml"/>
 
     </extensions>
 
