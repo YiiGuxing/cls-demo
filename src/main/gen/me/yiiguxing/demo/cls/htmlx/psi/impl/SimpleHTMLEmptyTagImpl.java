@@ -10,20 +10,27 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public class SimpleHTMLCommentImpl extends SimpleHTMLCommentBase implements SimpleHTMLComment {
+public class SimpleHTMLEmptyTagImpl extends SimpleHTMLTagImpl implements SimpleHTMLEmptyTag {
 
-  public SimpleHTMLCommentImpl(@NotNull ASTNode node) {
+  public SimpleHTMLEmptyTagImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull SimpleHTMLVisitor visitor) {
-    visitor.visitComment(this);
+    visitor.visitEmptyTag(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof SimpleHTMLVisitor) accept((SimpleHTMLVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<SimpleHTMLAttribute> getAttributeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLAttribute.class);
   }
 
 }

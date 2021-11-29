@@ -4,8 +4,10 @@ package me.yiiguxing.demo.cls.htmlx.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiComment;
 
-public interface SimpleHTMLComment extends SimpleHTMLElement, PsiComment {
+public interface SimpleHTMLEmptyTag extends SimpleHTMLTag {
+
+  @NotNull
+  List<SimpleHTMLAttribute> getAttributeList();
 
 }

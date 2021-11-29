@@ -25,12 +25,13 @@ public class _SimpleHTMLLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int WAITING_TAG_NAME = 2;
-  public static final int WAITING_ATTRIBUTE_NAME = 4;
-  public static final int WAITING_ATTR_VALUE_SQ = 6;
-  public static final int WAITING_ATTR_VALUE_DQ = 8;
-  public static final int WAITING_TEXT = 10;
-  public static final int WAITING_COMMENT_TEXT = 12;
+  public static final int WAITING_START_TAG_NAME = 2;
+  public static final int WAITING_END_TAG_NAME = 4;
+  public static final int WAITING_ATTRIBUTE_NAME = 6;
+  public static final int WAITING_ATTR_VALUE_SQ = 8;
+  public static final int WAITING_ATTR_VALUE_DQ = 10;
+  public static final int WAITING_TEXT = 12;
+  public static final int WAITING_COMMENT_TEXT = 14;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -39,7 +40,7 @@ public class _SimpleHTMLLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6, 6
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7, 7
   };
 
   /** 
@@ -170,13 +171,13 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\7\0\1\1\1\2\1\3\2\1\1\4\1\5\1\4"+
-    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\13"+
-    "\1\15\1\16\1\4\1\17\1\0\1\1\1\20\1\21"+
-    "\3\0\1\22\1\23\1\22\13\0\1\24";
+    "\10\0\1\1\1\2\1\3\1\1\1\4\1\5\1\4"+
+    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
+    "\1\14\1\16\1\17\1\4\1\20\1\0\1\21\1\22"+
+    "\3\0\1\23\1\24\13\0\1\25";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[49];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -203,14 +204,13 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\30\0\60\0\110\0\140\0\170\0\220\0\250"+
     "\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138\0\u0150\0\u0120"+
-    "\0\u0168\0\u0120\0\u0120\0\u0120\0\u0180\0\u0120\0\u0198\0\u0120"+
-    "\0\u01b0\0\u01c8\0\u0120\0\u01e0\0\u01f8\0\250\0\u0120\0\u0210"+
-    "\0\u0228\0\u0240\0\250\0\u0120\0\u0120\0\u0258\0\u0270\0\u0288"+
-    "\0\u02a0\0\u02b8\0\u02d0\0\u02e8\0\u0300\0\u0318\0\u0330\0\u0348"+
-    "\0\u0120";
+    "\0\u0168\0\u0180\0\u0120\0\u0120\0\u0120\0\u0198\0\u0120\0\u01b0"+
+    "\0\u0120\0\u01c8\0\u01e0\0\u0120\0\u01f8\0\300\0\u0120\0\u0210"+
+    "\0\u0228\0\u0240\0\u0120\0\u0120\0\u0258\0\u0270\0\u0288\0\u02a0"+
+    "\0\u02b8\0\u02d0\0\u02e8\0\u0300\0\u0318\0\u0330\0\u0348\0\u0120";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[49];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -233,25 +233,25 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\10\1\11\4\10\1\12\1\13\1\14\11\10\1\11"+
-    "\5\10\1\15\1\11\1\16\5\15\1\17\1\20\1\15"+
-    "\7\16\1\11\4\16\2\15\1\11\2\21\1\22\1\23"+
-    "\2\15\1\17\1\20\1\15\7\21\1\11\4\21\1\24"+
-    "\4\25\1\26\23\25\5\27\1\30\22\27\30\15\7\31"+
-    "\1\32\1\31\1\15\16\31\1\10\1\0\4\10\1\0"+
-    "\13\10\1\0\5\10\1\0\1\11\20\0\1\11\15\0"+
-    "\1\33\1\0\1\34\15\0\1\10\1\0\4\10\1\0"+
-    "\1\35\12\10\1\0\6\10\1\0\4\10\1\0\2\10"+
-    "\1\36\10\10\1\0\5\10\32\0\2\16\7\0\7\16"+
-    "\1\0\4\16\12\0\1\37\20\0\2\21\7\0\7\21"+
-    "\1\0\4\21\1\0\4\25\1\0\23\25\5\27\1\0"+
-    "\22\27\7\31\1\0\1\31\1\0\16\31\7\0\1\40"+
-    "\27\0\1\41\3\0\1\42\14\0\1\10\1\0\4\10"+
-    "\1\0\2\10\1\43\10\10\1\0\5\10\11\0\1\44"+
-    "\25\0\1\45\34\0\1\46\30\0\1\47\30\0\1\50"+
-    "\30\0\1\51\30\0\1\52\30\0\1\53\30\0\1\54"+
-    "\30\0\1\55\30\0\1\56\30\0\1\57\30\0\1\60"+
-    "\12\0\1\61\16\0";
+    "\1\11\1\12\4\11\1\13\1\11\1\14\11\11\1\12"+
+    "\5\11\1\15\1\12\1\16\5\15\1\17\1\20\1\15"+
+    "\7\16\1\12\4\16\2\15\1\12\1\21\5\15\1\17"+
+    "\1\20\1\15\7\21\1\12\4\21\2\15\1\12\2\22"+
+    "\1\23\1\24\2\15\1\17\1\20\1\15\7\22\1\12"+
+    "\4\22\1\25\4\26\1\27\23\26\5\30\1\31\22\30"+
+    "\30\15\7\32\1\33\1\32\1\15\16\32\1\11\1\0"+
+    "\4\11\1\0\13\11\1\0\5\11\1\0\1\12\20\0"+
+    "\1\12\15\0\1\34\1\0\1\35\15\0\1\11\1\0"+
+    "\4\11\1\0\2\11\1\36\10\11\1\0\5\11\32\0"+
+    "\2\16\7\0\7\16\1\0\4\16\12\0\1\37\20\0"+
+    "\2\21\7\0\7\21\1\0\4\21\3\0\2\22\7\0"+
+    "\7\22\1\0\4\22\1\0\4\26\1\0\23\26\5\30"+
+    "\1\0\22\30\7\32\1\0\1\32\1\0\16\32\7\0"+
+    "\1\40\27\0\1\41\3\0\1\42\25\0\1\43\25\0"+
+    "\1\44\34\0\1\45\30\0\1\46\30\0\1\47\30\0"+
+    "\1\50\30\0\1\51\30\0\1\52\30\0\1\53\30\0"+
+    "\1\54\30\0\1\55\30\0\1\56\30\0\1\57\12\0"+
+    "\1\60\16\0";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[864];
@@ -292,12 +292,12 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\7\0\5\1\1\11\2\1\1\11\1\1\3\11\1\1"+
-    "\1\11\1\1\1\11\2\1\1\11\1\0\2\1\1\11"+
-    "\3\0\1\1\2\11\13\0\1\11";
+    "\10\0\4\1\1\11\2\1\1\11\2\1\3\11\1\1"+
+    "\1\11\1\1\1\11\2\1\1\11\1\0\1\1\1\11"+
+    "\3\0\2\11\13\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[49];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -606,102 +606,107 @@ public class _SimpleHTMLLexer implements FlexLexer {
             { return ROW_TEXT;
             } 
             // fall through
-          case 21: break;
+          case 22: break;
           case 2: 
             { return WHITE_SPACE;
             } 
             // fall through
-          case 22: break;
+          case 23: break;
           case 3: 
-            { yybegin(WAITING_TAG_NAME); return TAG_START;
+            { yybegin(WAITING_START_TAG_NAME); return TAG_START;
             } 
             // fall through
-          case 23: break;
+          case 24: break;
           case 4: 
             { return BAD_CHARACTER;
             } 
             // fall through
-          case 24: break;
+          case 25: break;
           case 5: 
-            { yybegin(WAITING_ATTRIBUTE_NAME); return TAG_NAME;
+            { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME;
             } 
             // fall through
-          case 25: break;
+          case 26: break;
           case 6: 
             { yybegin(YYINITIAL); return TAG_END;
             } 
             // fall through
-          case 26: break;
-          case 7: 
-            { return ATTRIBUTE_NAME;
-            } 
-            // fall through
           case 27: break;
-          case 8: 
-            { yybegin(WAITING_ATTR_VALUE_SQ); return ATTRIBUTE_VALUE_DEFINER_SQ;
+          case 7: 
+            { return END_TAG_NAME;
             } 
             // fall through
           case 28: break;
-          case 9: 
-            { yybegin(WAITING_ATTR_VALUE_DQ); return ATTRIBUTE_VALUE_DEFINER_DQ;
+          case 8: 
+            { return ATTRIBUTE_NAME;
             } 
             // fall through
           case 29: break;
-          case 10: 
-            { return EQ;
+          case 9: 
+            { yybegin(WAITING_ATTR_VALUE_SQ); return ATTRIBUTE_VALUE_DEFINER_SQ;
             } 
             // fall through
           case 30: break;
-          case 11: 
-            { return ATTR_VALUE;
+          case 10: 
+            { yybegin(WAITING_ATTR_VALUE_DQ); return ATTRIBUTE_VALUE_DEFINER_DQ;
             } 
             // fall through
           case 31: break;
-          case 12: 
-            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ;
+          case 11: 
+            { return EQ;
             } 
             // fall through
           case 32: break;
-          case 13: 
-            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_DQ;
+          case 12: 
+            { return ATTR_VALUE;
             } 
             // fall through
           case 33: break;
-          case 14: 
-            { return COMMENT_TEXT;
+          case 13: 
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ;
             } 
             // fall through
           case 34: break;
-          case 15: 
-            { yybegin(WAITING_TAG_NAME); return END_TAG_START;
+          case 14: 
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_DQ;
             } 
             // fall through
           case 35: break;
-          case 16: 
-            { return EMPTY_TAG_END;
+          case 15: 
+            { return COMMENT_TEXT;
             } 
             // fall through
           case 36: break;
-          case 17: 
-            { yybegin(YYINITIAL); return EMPTY_TAG_END;
+          case 16: 
+            { yybegin(WAITING_END_TAG_NAME); return END_TAG_START;
             } 
             // fall through
           case 37: break;
-          case 18: 
-            { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START;
+          case 17: 
+            { return EMPTY_TAG_END;
             } 
             // fall through
           case 38: break;
+          case 18: 
+            { yybegin(YYINITIAL); return EMPTY_TAG_END;
+            } 
+            // fall through
+          case 39: break;
           case 19: 
             { yybegin(YYINITIAL); return COMMENT_END;
             } 
             // fall through
-          case 39: break;
+          case 40: break;
           case 20: 
+            { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START;
+            } 
+            // fall through
+          case 41: break;
+          case 21: 
             { return DOCTYPE;
             } 
             // fall through
-          case 40: break;
+          case 42: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

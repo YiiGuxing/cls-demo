@@ -12,6 +12,8 @@
   elementTypeClass="me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElementType"
   tokenTypeClass="me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTokenType"
 
+  psiImplUtilClass="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLPsiImplUtil"
+
   tokens=[
     TAG_START='<'
     TAG_END='>'
@@ -24,16 +26,23 @@
     ATTRIBUTE_VALUE_DEFINER_DQ='"'
     DOCTYPE='<!DOCTYPE html>'
   ]
+
+  extends(".*Tag")=Tag
 }
 
 SimpleHTMLFile ::= DOCTYPE? (Tag|Comment)*
 
-Tag ::= NotEmptyTag|EmptyTag
-private NotEmptyTag ::= TagStart (Tag|Comment|Text)* TagEnd {pin=1}
-private EmptyTag ::= TagHead '/>'
+Tag ::= NotEmptyTag|EmptyTag {
+  methods=[getTagNameElement getAttributeList]
+}
+NotEmptyTag ::= TagStart (Tag|Comment|Text)* TagEnd {
+  pin=1
+  methods=[getStartTagNameElement getEndTagNameElement]
+}
+EmptyTag ::= TagHead '/>'
 private TagStart ::= TagHead '>'
-private TagHead ::= '<' TAG_NAME Attribute* {pin=1}
-private TagEnd ::= '</' TAG_NAME '>' {pin=1}
+private TagHead ::= '<' START_TAG_NAME Attribute* {pin=1}
+private TagEnd ::= '</' END_TAG_NAME '>' {pin=1}
 Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {pin=1}
 AttributeValue ::= '"' ATTR_VALUE? '"' | "'" ATTR_VALUE? "'"
 Text ::= ROW_TEXT+

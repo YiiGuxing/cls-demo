@@ -1,16 +1,18 @@
 // This is a generated file. Not intended for manual editing.
 package me.yiiguxing.demo.cls.htmlx.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
-import me.yiiguxing.demo.cls.htmlx.psi.*;
+import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLAttribute;
+import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTag;
+import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements SimpleHTMLTag {
+import java.util.List;
+
+public abstract class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements SimpleHTMLTag {
 
   public SimpleHTMLTagImpl(@NotNull ASTNode node) {
     super(node);
@@ -27,27 +29,15 @@ public class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements SimpleHT
   }
 
   @Override
+  @Nullable
+  public PsiElement getTagNameElement() {
+    return SimpleHTMLPsiImplUtil.getTagNameElement(this);
+  }
+
+  @Override
   @NotNull
   public List<SimpleHTMLAttribute> getAttributeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLAttribute.class);
-  }
-
-  @Override
-  @NotNull
-  public List<SimpleHTMLComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLComment.class);
-  }
-
-  @Override
-  @NotNull
-  public List<SimpleHTMLTag> getTagList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLTag.class);
-  }
-
-  @Override
-  @NotNull
-  public List<SimpleHTMLText> getTextList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLText.class);
+    return SimpleHTMLPsiImplUtil.getAttributeList(this);
   }
 
 }

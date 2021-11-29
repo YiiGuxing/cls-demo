@@ -36,25 +36,34 @@ ATTR_VALUE_DQ = [^\"]+
 
 ROW_TEXT = [^\s<]+
 
-COMMENT_TEXT = [^"-->"]+
+COMMENT_TEXT = [^->]+
 
-%state WAITING_TAG_NAME, WAITING_ATTRIBUTE_NAME, WAITING_ATTR_VALUE_SQ, WAITING_ATTR_VALUE_DQ, WAITING_TEXT, WAITING_COMMENT_TEXT
+%state WAITING_START_TAG_NAME
+%state WAITING_END_TAG_NAME
+%state WAITING_ATTRIBUTE_NAME
+%state WAITING_ATTR_VALUE_SQ
+%state WAITING_ATTR_VALUE_DQ
+%state WAITING_TEXT
+%state WAITING_COMMENT_TEXT
 
 %%
 <YYINITIAL> {
   {WHITE_SPACE}          { return WHITE_SPACE; }
 
-  "<"                    { yybegin(WAITING_TAG_NAME); return TAG_START; }
-  "</"                   { yybegin(WAITING_TAG_NAME); return END_TAG_START; }
+  "<"                    { yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
   "/>"                   { return EMPTY_TAG_END; }
   "<!DOCTYPE html>"      { return DOCTYPE; }
   "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
-  "-->"                  { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   {ROW_TEXT}             { return ROW_TEXT; }
 }
 
-<WAITING_TAG_NAME> {
-  {IDENT}                { yybegin(WAITING_ATTRIBUTE_NAME); return TAG_NAME; }
+<WAITING_START_TAG_NAME> {
+  {IDENT}                { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
+}
+
+<WAITING_END_TAG_NAME> {
+  {IDENT}                { return END_TAG_NAME; }
 }
 
 <WAITING_ATTRIBUTE_NAME> {
@@ -74,7 +83,7 @@ COMMENT_TEXT = [^"-->"]+
   {ATTR_VALUE_DQ}        { return ATTR_VALUE; }
 }
 
-<YYINITIAL,WAITING_TAG_NAME,WAITING_ATTRIBUTE_NAME> {
+<YYINITIAL,WAITING_START_TAG_NAME,WAITING_END_TAG_NAME,WAITING_ATTRIBUTE_NAME> {
   {WHITE_SPACE}          { return WHITE_SPACE; }
   ">"                    { yybegin(YYINITIAL); return TAG_END; }
   "/>"                   { yybegin(YYINITIAL); return EMPTY_TAG_END; }

@@ -21,7 +21,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
 
   public void parseLight(IElementType t, PsiBuilder b) {
     boolean r;
-    b = adapt_builder_(t, b, this, null);
+    b = adapt_builder_(t, b, this, EXTENDS_SETS_);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
     r = parse_root_(t, b);
     exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
@@ -34,6 +34,10 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return SimpleHTMLFile(b, l + 1);
   }
+
+  public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
+    create_token_set_(EMPTY_TAG, NOT_EMPTY_TAG, TAG),
+  };
 
   /* ********************************************************** */
   // ATTRIBUTE_NAME ('=' AttributeValue)?
@@ -142,24 +146,24 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // TagHead '/>'
-  static boolean EmptyTag(PsiBuilder b, int l) {
+  public static boolean EmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EmptyTag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = TagHead(b, l + 1);
     r = r && consumeToken(b, EMPTY_TAG_END);
-    exit_section_(b, m, null, r);
+    exit_section_(b, m, EMPTY_TAG, r);
     return r;
   }
 
   /* ********************************************************** */
   // TagStart (Tag|Comment|Text)* TagEnd
-  static boolean NotEmptyTag(PsiBuilder b, int l) {
+  public static boolean NotEmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NotEmptyTag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    Marker m = enter_section_(b, l, _NONE_, NOT_EMPTY_TAG, null);
     r = TagStart(b, l + 1);
     p = r; // pin = 1
     r = r && report_error_(b, NotEmptyTag_1(b, l + 1));
@@ -234,34 +238,34 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "Tag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _COLLAPSE_, TAG, null);
     r = NotEmptyTag(b, l + 1);
     if (!r) r = EmptyTag(b, l + 1);
-    exit_section_(b, m, TAG, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // '</' TAG_NAME '>'
+  // '</' END_TAG_NAME '>'
   static boolean TagEnd(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagEnd")) return false;
     if (!nextTokenIs(b, END_TAG_START)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeTokens(b, 1, END_TAG_START, TAG_NAME, TAG_END);
+    r = consumeTokens(b, 1, END_TAG_START, END_TAG_NAME, TAG_END);
     p = r; // pin = 1
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
   /* ********************************************************** */
-  // '<' TAG_NAME Attribute*
+  // '<' START_TAG_NAME Attribute*
   static boolean TagHead(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagHead")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeTokens(b, 1, TAG_START, TAG_NAME);
+    r = consumeTokens(b, 1, TAG_START, START_TAG_NAME);
     p = r; // pin = 1
     r = r && TagHead_2(b, l + 1);
     exit_section_(b, l, m, r, p, null);

@@ -11,6 +11,8 @@ public interface SimpleHTMLTypes {
   IElementType ATTRIBUTE = new SimpleHTMLElementType("ATTRIBUTE");
   IElementType ATTRIBUTE_VALUE = new SimpleHTMLElementType("ATTRIBUTE_VALUE");
   IElementType COMMENT = new SimpleHTMLElementType("COMMENT");
+  IElementType EMPTY_TAG = new SimpleHTMLElementType("EMPTY_TAG");
+  IElementType NOT_EMPTY_TAG = new SimpleHTMLElementType("NOT_EMPTY_TAG");
   IElementType TAG = new SimpleHTMLElementType("TAG");
   IElementType TEXT = new SimpleHTMLElementType("TEXT");
 
@@ -23,11 +25,12 @@ public interface SimpleHTMLTypes {
   IElementType COMMENT_TEXT = new SimpleHTMLTokenType("COMMENT_TEXT");
   IElementType DOCTYPE = new SimpleHTMLTokenType("<!DOCTYPE html>");
   IElementType EMPTY_TAG_END = new SimpleHTMLTokenType("/>");
+  IElementType END_TAG_NAME = new SimpleHTMLTokenType("END_TAG_NAME");
   IElementType END_TAG_START = new SimpleHTMLTokenType("</");
   IElementType EQ = new SimpleHTMLTokenType("=");
   IElementType ROW_TEXT = new SimpleHTMLTokenType("ROW_TEXT");
+  IElementType START_TAG_NAME = new SimpleHTMLTokenType("START_TAG_NAME");
   IElementType TAG_END = new SimpleHTMLTokenType(">");
-  IElementType TAG_NAME = new SimpleHTMLTokenType("TAG_NAME");
   IElementType TAG_START = new SimpleHTMLTokenType("<");
 
   class Factory {
@@ -42,8 +45,11 @@ public interface SimpleHTMLTypes {
       else if (type == COMMENT) {
         return new SimpleHTMLCommentImpl(node);
       }
-      else if (type == TAG) {
-        return new SimpleHTMLTagImpl(node);
+      else if (type == EMPTY_TAG) {
+        return new SimpleHTMLEmptyTagImpl(node);
+      }
+      else if (type == NOT_EMPTY_TAG) {
+        return new SimpleHTMLNotEmptyTagImpl(node);
       }
       else if (type == TEXT) {
         return new SimpleHTMLTextImpl(node);
