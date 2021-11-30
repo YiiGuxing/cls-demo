@@ -47,7 +47,7 @@ Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {pin=1}
 AttributeValue ::= '"' ATTR_VALUE? '"' | "'" ATTR_VALUE? "'"
 Text ::= ROW_TEXT+
 
-Comment ::= '<!--' COMMENT_TEXT? '-->'  {
+Comment ::= '<!--' COMMENT_TEXT* '-->'  {
     pin=1
     implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiComment"]
     extends="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLCommentBase"

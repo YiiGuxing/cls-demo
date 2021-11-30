@@ -15,7 +15,7 @@ import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*
 
 class SimpleHTMLParserDefinition : ParserDefinition {
 
-    override fun createLexer(project: Project): Lexer = SimpleHTMLLexerAdapter()
+    override fun createLexer(project: Project): Lexer = SimpleHTMLLexer()
 
     override fun createParser(project: Project): PsiParser = SimpleHTMLParser()
 

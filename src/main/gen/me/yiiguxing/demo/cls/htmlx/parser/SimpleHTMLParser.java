@@ -123,7 +123,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '<!--' COMMENT_TEXT? '-->'
+  // '<!--' COMMENT_TEXT* '-->'
   public static boolean Comment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Comment")) return false;
     if (!nextTokenIs(b, COMMENT_START)) return false;
@@ -137,10 +137,14 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // COMMENT_TEXT?
+  // COMMENT_TEXT*
   private static boolean Comment_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Comment_1")) return false;
-    consumeToken(b, COMMENT_TEXT);
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, COMMENT_TEXT)) break;
+      if (!empty_element_parsed_guard_(b, "Comment_1", c)) break;
+    }
     return true;
   }
 

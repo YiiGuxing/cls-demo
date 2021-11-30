@@ -1,16 +1,14 @@
 // This is a generated file. Not intended for manual editing.
 package me.yiiguxing.demo.cls.htmlx.psi.impl;
 
+import java.util.List;
+import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLAttribute;
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTag;
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLVisitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import com.intellij.psi.util.PsiTreeUtil;
+import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
+import me.yiiguxing.demo.cls.htmlx.psi.*;
 
 public abstract class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements SimpleHTMLTag {
 

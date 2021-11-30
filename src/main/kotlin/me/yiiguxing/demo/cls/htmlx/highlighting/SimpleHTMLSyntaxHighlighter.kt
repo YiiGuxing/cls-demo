@@ -5,13 +5,13 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.containers.MultiMap
-import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLexerAdapter
+import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLexer
 import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*
 
 
 class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
 
-    override fun getHighlightingLexer(): Lexer = SimpleHTMLLexerAdapter()
+    override fun getHighlightingLexer(): Lexer = SimpleHTMLLexer()
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
         return pack(SimpleHTMLHighlighterColors.DEFAULT_CODE, keyMap[tokenType].toTypedArray())

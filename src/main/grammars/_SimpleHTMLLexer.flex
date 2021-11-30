@@ -91,6 +91,7 @@ COMMENT_TEXT = [^->]+
 
 <WAITING_COMMENT_TEXT> {
   "-->"                  { yybegin(YYINITIAL); return COMMENT_END; }
+  "-" | ">"              { return COMMENT_TEXT; }
   {COMMENT_TEXT}         { return COMMENT_TEXT; }
 }
 
