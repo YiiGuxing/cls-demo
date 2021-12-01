@@ -10,7 +10,6 @@ group = "me.yiiguxing.demo.cls"
 version = "0.1"
 
 repositories {
-    mavenLocal()
     maven(url = "https://maven.aliyun.com/repository/public")
     maven(url = "https://maven-central.storage-download.googleapis.com/repos/central/data/")
     maven(url = "https://repo.eclipse.org/content/groups/releases/")
@@ -28,9 +27,9 @@ sourceSets.main {
 
 intellij {
     pluginName.set("Simple HTML Support")
-    version.set("2020.3.4")
+    version.set("2021.2.3")
     type.set("IU")
-    plugins.set(listOf("PsiViewer:203-SNAPSHOT"))
+    plugins.set(listOf("PsiViewer:212-SNAPSHOT"))
 }
 
 tasks {
