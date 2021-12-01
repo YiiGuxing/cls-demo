@@ -20,6 +20,10 @@ public class SimpleHTMLVisitor extends PsiElementVisitor {
     // visitPsiComment(o);
   }
 
+  public void visitDoctype(@NotNull SimpleHTMLDoctype o) {
+    visitElement(o);
+  }
+
   public void visitEmptyTag(@NotNull SimpleHTMLEmptyTag o) {
     visitTag(o);
   }

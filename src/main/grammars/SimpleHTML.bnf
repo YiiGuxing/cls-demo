@@ -24,13 +24,17 @@
     COMMENT_END='-->'
     ATTRIBUTE_VALUE_DEFINER_SQ="'"
     ATTRIBUTE_VALUE_DEFINER_DQ='"'
-    DOCTYPE='<!DOCTYPE html>'
+    DOCTYPE_START='<!DOCTYPE'
+    DOCTYPE_NAME='HTML'
   ]
 
   extends(".*Tag")=Tag
 }
 
-SimpleHTMLFile ::= DOCTYPE? (Tag | Comment)*
+SimpleHTMLFile ::= Doctype? (Tag | Comment)*
+
+Doctype ::= DOCTYPE_START DOCTYPE_NAME DOCTYPE_END { pin=1 recoverWhile="Recover" }
+private Recover ::= !('<')
 
 Tag ::= NotEmptyTag | EmptyTag {
   methods=[getTagNameElement getAttributeList]

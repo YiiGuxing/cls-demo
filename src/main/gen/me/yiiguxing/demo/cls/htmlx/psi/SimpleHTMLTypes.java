@@ -11,6 +11,7 @@ public interface SimpleHTMLTypes {
   IElementType ATTRIBUTE = new SimpleHTMLElementType("ATTRIBUTE");
   IElementType ATTRIBUTE_VALUE = new SimpleHTMLElementType("ATTRIBUTE_VALUE");
   IElementType COMMENT = new SimpleHTMLElementType("COMMENT");
+  IElementType DOCTYPE = new SimpleHTMLElementType("DOCTYPE");
   IElementType EMPTY_TAG = new SimpleHTMLElementType("EMPTY_TAG");
   IElementType NOT_EMPTY_TAG = new SimpleHTMLElementType("NOT_EMPTY_TAG");
   IElementType TAG = new SimpleHTMLElementType("TAG");
@@ -24,7 +25,9 @@ public interface SimpleHTMLTypes {
   IElementType COMMENT_END = new SimpleHTMLTokenType("-->");
   IElementType COMMENT_START = new SimpleHTMLTokenType("<!--");
   IElementType COMMENT_TEXT = new SimpleHTMLTokenType("COMMENT_TEXT");
-  IElementType DOCTYPE = new SimpleHTMLTokenType("<!DOCTYPE html>");
+  IElementType DOCTYPE_END = new SimpleHTMLTokenType("DOCTYPE_END");
+  IElementType DOCTYPE_NAME = new SimpleHTMLTokenType("HTML");
+  IElementType DOCTYPE_START = new SimpleHTMLTokenType("<!DOCTYPE");
   IElementType EMPTY_TAG_END = new SimpleHTMLTokenType("/>");
   IElementType END_TAG_NAME = new SimpleHTMLTokenType("END_TAG_NAME");
   IElementType END_TAG_START = new SimpleHTMLTokenType("</");
@@ -44,6 +47,9 @@ public interface SimpleHTMLTypes {
       }
       else if (type == COMMENT) {
         return new SimpleHTMLCommentImpl(node);
+      }
+      else if (type == DOCTYPE) {
+        return new SimpleHTMLDoctypeImpl(node);
       }
       else if (type == EMPTY_TAG) {
         return new SimpleHTMLEmptyTagImpl(node);

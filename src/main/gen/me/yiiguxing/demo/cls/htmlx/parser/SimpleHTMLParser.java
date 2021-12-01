@@ -152,6 +152,29 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // DOCTYPE_START DOCTYPE_NAME DOCTYPE_END
+  public static boolean Doctype(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Doctype")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, DOCTYPE, "<doctype>");
+    r = consumeTokens(b, 1, DOCTYPE_START, DOCTYPE_NAME, DOCTYPE_END);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, SimpleHTMLParser::ER);
+    return r || p;
+  }
+
+  /* ********************************************************** */
+  // !('<')
+  static boolean ER(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ER")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !consumeToken(b, TAG_START);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // TagHead '/>'
   public static boolean EmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EmptyTag")) return false;
@@ -192,7 +215,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DOCTYPE? (Tag | Comment)*
+  // Doctype? (Tag | Comment)*
   static boolean SimpleHTMLFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SimpleHTMLFile")) return false;
     boolean r;
@@ -203,10 +226,10 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // DOCTYPE?
+  // Doctype?
   private static boolean SimpleHTMLFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SimpleHTMLFile_0")) return false;
-    consumeToken(b, DOCTYPE);
+    Doctype(b, l + 1);
     return true;
   }
 

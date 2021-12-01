@@ -11,6 +11,7 @@ private val MERGING_TOKENS = TokenSet.create(
     TokenType.WHITE_SPACE,
     TokenType.BAD_CHARACTER,
     SimpleHTMLTypes.COMMENT_TEXT,
+    SimpleHTMLTypes.ROW_TEXT,
 )
 
 class SimpleHTMLLexer : MergingLexerAdapter(

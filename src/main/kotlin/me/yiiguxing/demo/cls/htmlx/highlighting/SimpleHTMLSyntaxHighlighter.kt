@@ -1,8 +1,10 @@
 package me.yiiguxing.demo.cls.htmlx.highlighting
 
 import com.intellij.lexer.Lexer
+import com.intellij.openapi.editor.HighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
+import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.containers.MultiMap
 import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLexer
@@ -21,7 +23,9 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
         private val keyMap: MultiMap<IElementType, TextAttributesKey> = MultiMap.create()
 
         init {
-            keyMap.putValue(DOCTYPE, SimpleHTMLHighlighterColors.DOCTYPE)
+            for (type in arrayOf(DOCTYPE_START, DOCTYPE_END)) {
+                keyMap.putValue(type, SimpleHTMLHighlighterColors.DOCTYPE)
+            }
 
             for (type in arrayOf(TAG_START, TAG_END, END_TAG_START, EMPTY_TAG_END)) {
                 keyMap.putValue(type, SimpleHTMLHighlighterColors.TAG)
@@ -31,7 +35,10 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
                 keyMap.putValue(type, SimpleHTMLHighlighterColors.TAG_NAME)
             }
 
-            keyMap.putValue(ATTRIBUTE_NAME, SimpleHTMLHighlighterColors.ATTRIBUTE_NAME)
+            for (type in arrayOf(DOCTYPE_NAME, ATTRIBUTE_NAME)) {
+                keyMap.putValue(type, SimpleHTMLHighlighterColors.ATTRIBUTE_NAME)
+            }
+
             keyMap.putValue(ATTRIBUTE_ASSIGN, SimpleHTMLHighlighterColors.ATTRIBUTE_ASSIGN)
 
             for (type in arrayOf(ATTRIBUTE_VALUE_TEXT, ATTRIBUTE_VALUE_DEFINER_SQ, ATTRIBUTE_VALUE_DEFINER_DQ)) {
@@ -41,6 +48,8 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
             for (type in arrayOf(COMMENT_START, COMMENT_TEXT, COMMENT_END)) {
                 keyMap.putValue(type, SimpleHTMLHighlighterColors.COMMENT)
             }
+
+            keyMap.putValue(TokenType.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER)
         }
 
     }

@@ -24,12 +24,17 @@ import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-ALPHA=[:letter:]
-DIGIT=[:digit:]
+DOCTYPE_NAME = [hH][tT][mM][lL]
 
-NAME_BODY = {ALPHA} | {DIGIT} | "_" | "-"
-NAME = {ALPHA} ({NAME_BODY}) *
+ALPHA = [:letter:]
+DIGIT = [:digit:]
+
+NAME_START = {ALPHA} | "_"
+NAME_BODY = {NAME_START} | {DIGIT} | "-"
+NAME = {NAME_START} ({NAME_BODY}) *
 ATTRIBUTE_NAME = ({NAME_BODY})+
+
+PRE_START_TAG = "<" {NAME_START}
 
 ATTR_VALUE = [^'\"\s>]+
 ATTR_VALUE_SQ = [^']+
@@ -38,6 +43,7 @@ ATTR_VALUE_DQ = [^\"]+
 ROW_TEXT = [^\s<]+
 COMMENT_TEXT = [^->]+
 
+%state WAITING_DOCTYPE
 %state WAITING_START_TAG_NAME
 %state WAITING_END_TAG_NAME
 %state WAITING_ATTRIBUTE_NAME
@@ -49,21 +55,30 @@ COMMENT_TEXT = [^->]+
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}          { return WHITE_SPACE; }
-
-  "<"                    { yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  "<!DOCTYPE"            { yybegin(WAITING_DOCTYPE); return DOCTYPE_START; }
   "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
-  "<!DOCTYPE html>"      { return DOCTYPE; }
-  "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   {ROW_TEXT}             { return ROW_TEXT; }
 }
 
+<YYINITIAL,WAITING_DOCTYPE> {
+  {WHITE_SPACE}          { return WHITE_SPACE; }
+
+  {PRE_START_TAG}        { yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
+  "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
+  "<"                    { yybegin(YYINITIAL); return ROW_TEXT; }
+}
+
+<WAITING_DOCTYPE> {
+  {DOCTYPE_NAME}         { return DOCTYPE_NAME; }
+  ">"                    { yybegin(YYINITIAL); return DOCTYPE_END; }
+}
+
 <WAITING_START_TAG_NAME> {
-  {NAME}                { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
+  {NAME}                 { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
 }
 
 <WAITING_END_TAG_NAME> {
-  {NAME}                { return END_TAG_NAME; }
+  {NAME}                 { return END_TAG_NAME; }
 }
 
 <WAITING_ATTRIBUTE_NAME> {
@@ -78,8 +93,8 @@ COMMENT_TEXT = [^->]+
 }
 
 <WAITING_ATTR_VALUE_SQ> {
-  "'"                   { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ; }
-  {ATTR_VALUE_SQ}       { return ATTRIBUTE_VALUE_TEXT; }
+  "'"                    { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ; }
+  {ATTR_VALUE_SQ}        { return ATTRIBUTE_VALUE_TEXT; }
 }
 
 <WAITING_ATTR_VALUE_DQ> {
@@ -91,11 +106,18 @@ COMMENT_TEXT = [^->]+
 WAITING_END_TAG_NAME,
 WAITING_ATTRIBUTE_NAME,
 WAITING_ATTR_VALUE> {
-  {WHITE_SPACE}          { return WHITE_SPACE; }
-  "<"                    { yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  {WHITE_SPACE}          {
+                            if (yystate()!=WAITING_END_TAG_NAME)
+                                return WHITE_SPACE; yybegin(YYINITIAL);
+                            yybegin(YYINITIAL);
+                            yypushback(yytext().length());
+                         }
+  {PRE_START_TAG}        { yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
   "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
   ">"                    { yybegin(YYINITIAL); return TAG_END; }
   "/>"                   { yybegin(YYINITIAL); return EMPTY_TAG_END; }
+  "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
+  .                      { yybegin(YYINITIAL); yypushback(yytext().length()); }
 }
 
 <WAITING_COMMENT_TEXT> {
@@ -104,4 +126,4 @@ WAITING_ATTR_VALUE> {
   {COMMENT_TEXT}         { return COMMENT_TEXT; }
 }
 
-[^] { return BAD_CHARACTER; }
+[^]                      { return BAD_CHARACTER; }
