@@ -1,6 +1,5 @@
 package me.yiiguxing.demo.cls.htmlx.parser;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
@@ -25,22 +24,24 @@ import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-LETTER = [:letter:] | "_"
-DIGIT =  [:digit:]
+ALPHA=[:letter:]
+DIGIT=[:digit:]
 
-IDENT = {LETTER} ({LETTER} | {DIGIT})*
+NAME_BODY = {ALPHA} | {DIGIT} | "_" | "-"
+NAME = {ALPHA} ({NAME_BODY}) *
+ATTRIBUTE_NAME = ({NAME_BODY})+
 
-ATTRIBUTE_NAME = ({LETTER} | {DIGIT})+
+ATTR_VALUE = [^'\"\s>]+
 ATTR_VALUE_SQ = [^']+
 ATTR_VALUE_DQ = [^\"]+
 
 ROW_TEXT = [^\s<]+
-
 COMMENT_TEXT = [^->]+
 
 %state WAITING_START_TAG_NAME
 %state WAITING_END_TAG_NAME
 %state WAITING_ATTRIBUTE_NAME
+%state WAITING_ATTR_VALUE
 %state WAITING_ATTR_VALUE_SQ
 %state WAITING_ATTR_VALUE_DQ
 %state WAITING_TEXT
@@ -52,39 +53,47 @@ COMMENT_TEXT = [^->]+
 
   "<"                    { yybegin(WAITING_START_TAG_NAME); return TAG_START; }
   "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
-  "/>"                   { return EMPTY_TAG_END; }
   "<!DOCTYPE html>"      { return DOCTYPE; }
   "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   {ROW_TEXT}             { return ROW_TEXT; }
 }
 
 <WAITING_START_TAG_NAME> {
-  {IDENT}                { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
+  {NAME}                { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
 }
 
 <WAITING_END_TAG_NAME> {
-  {IDENT}                { return END_TAG_NAME; }
+  {NAME}                { return END_TAG_NAME; }
 }
 
 <WAITING_ATTRIBUTE_NAME> {
-  "="                    { return EQ; }
+  {ATTRIBUTE_NAME}       { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_NAME; }
+  "="                    { yybegin(WAITING_ATTR_VALUE); return ATTRIBUTE_ASSIGN; }
+}
+
+<WAITING_ATTR_VALUE> {
   "'"                    { yybegin(WAITING_ATTR_VALUE_SQ); return ATTRIBUTE_VALUE_DEFINER_SQ; }
   "\""                   { yybegin(WAITING_ATTR_VALUE_DQ); return ATTRIBUTE_VALUE_DEFINER_DQ; }
-  {ATTRIBUTE_NAME}       { return ATTRIBUTE_NAME; }
+  {ATTR_VALUE}           { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_TEXT; }
 }
 
 <WAITING_ATTR_VALUE_SQ> {
   "'"                   { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ; }
-  {ATTR_VALUE_SQ}       { return ATTR_VALUE; }
+  {ATTR_VALUE_SQ}       { return ATTRIBUTE_VALUE_TEXT; }
 }
 
 <WAITING_ATTR_VALUE_DQ> {
   "\""                   { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_DQ; }
-  {ATTR_VALUE_DQ}        { return ATTR_VALUE; }
+  {ATTR_VALUE_DQ}        { return ATTRIBUTE_VALUE_TEXT; }
 }
 
-<YYINITIAL,WAITING_START_TAG_NAME,WAITING_END_TAG_NAME,WAITING_ATTRIBUTE_NAME> {
+<WAITING_START_TAG_NAME,
+WAITING_END_TAG_NAME,
+WAITING_ATTRIBUTE_NAME,
+WAITING_ATTR_VALUE> {
   {WHITE_SPACE}          { return WHITE_SPACE; }
+  "<"                    { yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
   ">"                    { yybegin(YYINITIAL); return TAG_END; }
   "/>"                   { yybegin(YYINITIAL); return EMPTY_TAG_END; }
 }

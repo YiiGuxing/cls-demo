@@ -16,10 +16,11 @@ public interface SimpleHTMLTypes {
   IElementType TAG = new SimpleHTMLElementType("TAG");
   IElementType TEXT = new SimpleHTMLElementType("TEXT");
 
+  IElementType ATTRIBUTE_ASSIGN = new SimpleHTMLTokenType("=");
   IElementType ATTRIBUTE_NAME = new SimpleHTMLTokenType("ATTRIBUTE_NAME");
   IElementType ATTRIBUTE_VALUE_DEFINER_DQ = new SimpleHTMLTokenType("\"");
   IElementType ATTRIBUTE_VALUE_DEFINER_SQ = new SimpleHTMLTokenType("'");
-  IElementType ATTR_VALUE = new SimpleHTMLTokenType("ATTR_VALUE");
+  IElementType ATTRIBUTE_VALUE_TEXT = new SimpleHTMLTokenType("ATTRIBUTE_VALUE_TEXT");
   IElementType COMMENT_END = new SimpleHTMLTokenType("-->");
   IElementType COMMENT_START = new SimpleHTMLTokenType("<!--");
   IElementType COMMENT_TEXT = new SimpleHTMLTokenType("COMMENT_TEXT");
@@ -27,7 +28,6 @@ public interface SimpleHTMLTypes {
   IElementType EMPTY_TAG_END = new SimpleHTMLTokenType("/>");
   IElementType END_TAG_NAME = new SimpleHTMLTokenType("END_TAG_NAME");
   IElementType END_TAG_START = new SimpleHTMLTokenType("</");
-  IElementType EQ = new SimpleHTMLTokenType("=");
   IElementType ROW_TEXT = new SimpleHTMLTokenType("ROW_TEXT");
   IElementType START_TAG_NAME = new SimpleHTMLTokenType("START_TAG_NAME");
   IElementType TAG_END = new SimpleHTMLTokenType(">");

@@ -28,10 +28,11 @@ public class _SimpleHTMLLexer implements FlexLexer {
   public static final int WAITING_START_TAG_NAME = 2;
   public static final int WAITING_END_TAG_NAME = 4;
   public static final int WAITING_ATTRIBUTE_NAME = 6;
-  public static final int WAITING_ATTR_VALUE_SQ = 8;
-  public static final int WAITING_ATTR_VALUE_DQ = 10;
-  public static final int WAITING_TEXT = 12;
-  public static final int WAITING_COMMENT_TEXT = 14;
+  public static final int WAITING_ATTR_VALUE = 8;
+  public static final int WAITING_ATTR_VALUE_SQ = 10;
+  public static final int WAITING_ATTR_VALUE_DQ = 12;
+  public static final int WAITING_TEXT = 14;
+  public static final int WAITING_COMMENT_TEXT = 16;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -40,7 +41,8 @@ public class _SimpleHTMLLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7, 7
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7,  7, 
+     8, 8
   };
 
   /** 
@@ -121,14 +123,14 @@ public class _SimpleHTMLLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 3184 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\5\1\22\0\1\22\1\12\1\5\4\0\1\4\5\0\1\7\1\0\1\10\12\3\2\0\1\6\1\27\1"+
-    "\11\2\0\2\2\1\15\1\13\1\21\11\2\1\14\1\20\3\2\1\16\4\2\1\17\1\2\4\0\1\2\1"+
-    "\0\7\2\1\23\3\2\1\26\1\25\6\2\1\24\6\2\12\0\1\1\12\0\1\1\11\0\1\2\12\0\1\2"+
-    "\4\0\1\2\5\0\27\2\1\0\12\2\4\0\14\2\16\0\5\2\7\0\1\2\1\0\1\2\1\0\5\2\1\0\2"+
-    "\2\2\0\4\2\1\0\1\2\6\0\1\2\1\0\3\2\1\0\1\2\1\0\4\2\1\0\23\2\1\0\13\2\10\0"+
-    "\6\2\1\0\26\2\2\0\1\2\6\0\10\2\10\0\13\2\5\0\3\2\15\0\12\3\4\0\6\2\1\0\1\2"+
-    "\17\0\2\2\7\0\2\2\12\3\3\2\2\0\2\2\1\0\16\2\15\0\11\2\13\0\1\2\16\0\12\3\6"+
-    "\2\4\0\2\2\4\0\1\2\5\0\6\2\4\0\1\2\11\0\1\2\3\0\1\2\7\0\11\2\7\0\5\2\1\0\10"+
+    "\11\0\5\1\22\0\1\22\1\12\1\7\4\0\1\6\5\0\1\4\1\0\1\11\12\3\2\0\1\10\1\27\1"+
+    "\5\2\0\2\2\1\15\1\13\1\21\11\2\1\14\1\20\3\2\1\16\4\2\1\17\1\2\4\0\1\3\1\0"+
+    "\7\2\1\23\3\2\1\26\1\25\6\2\1\24\6\2\12\0\1\1\12\0\1\1\11\0\1\2\12\0\1\2\4"+
+    "\0\1\2\5\0\27\2\1\0\12\2\4\0\14\2\16\0\5\2\7\0\1\2\1\0\1\2\1\0\5\2\1\0\2\2"+
+    "\2\0\4\2\1\0\1\2\6\0\1\2\1\0\3\2\1\0\1\2\1\0\4\2\1\0\23\2\1\0\13\2\10\0\6"+
+    "\2\1\0\26\2\2\0\1\2\6\0\10\2\10\0\13\2\5\0\3\2\15\0\12\3\4\0\6\2\1\0\1\2\17"+
+    "\0\2\2\7\0\2\2\12\3\3\2\2\0\2\2\1\0\16\2\15\0\11\2\13\0\1\2\16\0\12\3\6\2"+
+    "\4\0\2\2\4\0\1\2\5\0\6\2\4\0\1\2\11\0\1\2\3\0\1\2\7\0\11\2\7\0\5\2\1\0\10"+
     "\2\6\0\26\2\3\0\1\2\2\0\1\2\7\0\12\2\4\0\12\3\1\2\4\0\10\2\2\0\2\2\2\0\26"+
     "\2\1\0\7\2\1\0\1\2\3\0\4\2\3\0\1\2\20\0\1\2\15\0\2\2\1\0\1\2\5\0\6\2\4\0\2"+
     "\2\1\0\2\2\1\0\2\2\1\0\2\2\17\0\4\2\1\0\1\2\7\0\12\3\2\0\3\2\20\0\11\2\1\0"+
@@ -171,13 +173,13 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\10\0\1\1\1\2\1\3\1\1\1\4\1\5\1\4"+
-    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
-    "\1\14\1\16\3\17\1\20\1\0\1\21\1\22\3\0"+
-    "\1\23\1\24\13\0\1\25";
+    "\11\0\1\1\1\2\1\3\1\4\1\5\1\6\1\3"+
+    "\1\4\1\7\1\10\1\11\1\12\1\13\1\14\1\12"+
+    "\1\15\1\16\1\15\1\17\3\20\1\21\1\0\1\22"+
+    "\3\0\1\23\1\24\13\0\1\25";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[49];
+    int [] result = new int[51];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -203,15 +205,15 @@ public class _SimpleHTMLLexer implements FlexLexer {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\30\0\60\0\110\0\140\0\170\0\220\0\250"+
-    "\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138\0\u0150\0\u0120"+
-    "\0\u0168\0\u0180\0\u0120\0\u0120\0\u0120\0\u0198\0\u0120\0\u01b0"+
-    "\0\u0120\0\u01c8\0\u01e0\0\u0120\0\u0120\0\u01f8\0\300\0\u0120"+
-    "\0\u0210\0\u0228\0\u0240\0\u0120\0\u0120\0\u0258\0\u0270\0\u0288"+
-    "\0\u02a0\0\u02b8\0\u02d0\0\u02e8\0\u0300\0\u0318\0\u0330\0\u0348"+
-    "\0\u0120";
+    "\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138\0\u0120\0\u0150"+
+    "\0\u0168\0\u0180\0\u0198\0\u0120\0\u01b0\0\u0120\0\u0120\0\u01c8"+
+    "\0\u01e0\0\u0120\0\u01f8\0\u0120\0\u0210\0\u0228\0\u0120\0\u0120"+
+    "\0\u0240\0\u0120\0\u0258\0\u0270\0\u0288\0\u0120\0\u0120\0\u02a0"+
+    "\0\u02b8\0\u02d0\0\u02e8\0\u0300\0\u0318\0\u0330\0\u0348\0\u0360"+
+    "\0\u0378\0\u0390\0\u0120";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[49];
+    int [] result = new int[51];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -234,28 +236,29 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\11\1\12\4\11\1\13\1\11\1\14\11\11\1\12"+
-    "\5\11\1\15\1\12\1\16\5\15\1\17\1\20\1\15"+
-    "\7\16\1\12\4\16\2\15\1\12\1\21\5\15\1\17"+
-    "\1\20\1\15\7\21\1\12\4\21\2\15\1\12\2\22"+
-    "\1\23\1\24\2\15\1\17\1\20\1\15\7\22\1\12"+
-    "\4\22\1\25\4\26\1\27\23\26\5\30\1\31\22\30"+
-    "\30\15\7\32\1\33\1\32\1\34\16\32\1\11\1\0"+
-    "\4\11\1\0\13\11\1\0\5\11\1\0\1\12\20\0"+
-    "\1\12\15\0\1\35\1\0\1\36\15\0\1\11\1\0"+
-    "\4\11\1\0\2\11\1\37\10\11\1\0\5\11\32\0"+
-    "\2\16\7\0\7\16\1\0\4\16\12\0\1\40\20\0"+
-    "\2\21\7\0\7\21\1\0\4\21\3\0\2\22\7\0"+
-    "\7\22\1\0\4\22\1\0\4\26\1\0\23\26\5\30"+
-    "\1\0\22\30\7\32\1\0\1\32\1\0\16\32\7\0"+
-    "\1\41\27\0\1\42\3\0\1\43\25\0\1\44\25\0"+
-    "\1\45\34\0\1\46\30\0\1\47\30\0\1\50\30\0"+
-    "\1\51\30\0\1\52\30\0\1\53\30\0\1\54\30\0"+
-    "\1\55\30\0\1\56\30\0\1\57\30\0\1\60\12\0"+
-    "\1\61\16\0";
+    "\1\12\1\13\6\12\1\14\11\12\1\13\5\12\1\15"+
+    "\1\13\1\16\2\15\1\17\2\15\1\20\1\21\1\15"+
+    "\7\16\1\13\4\16\2\15\1\13\1\22\2\15\1\17"+
+    "\2\15\1\20\1\21\1\15\7\22\1\13\4\22\2\15"+
+    "\1\13\3\23\1\17\2\15\1\20\1\21\1\15\7\23"+
+    "\1\13\4\23\1\24\1\25\1\13\3\25\1\17\1\26"+
+    "\1\27\1\25\1\30\10\25\1\13\5\25\6\31\1\32"+
+    "\21\31\7\33\1\34\20\33\30\15\4\35\1\36\1\37"+
+    "\22\35\1\12\1\0\6\12\1\0\11\12\1\0\5\12"+
+    "\1\0\1\13\20\0\1\13\16\0\1\40\1\41\47\0"+
+    "\3\16\6\0\7\16\1\0\4\16\12\0\1\40\23\0"+
+    "\1\42\24\0\3\22\6\0\7\22\1\0\4\22\3\0"+
+    "\3\23\6\0\7\23\1\0\4\23\1\0\1\25\1\0"+
+    "\3\25\3\0\12\25\1\0\6\25\1\0\3\25\1\42"+
+    "\2\0\12\25\1\0\5\25\6\31\1\0\21\31\7\33"+
+    "\1\0\20\33\4\35\2\0\22\35\4\0\1\43\27\0"+
+    "\1\44\6\0\1\45\21\0\1\46\26\0\1\47\37\0"+
+    "\1\50\30\0\1\51\30\0\1\52\30\0\1\53\30\0"+
+    "\1\54\30\0\1\55\30\0\1\56\30\0\1\57\30\0"+
+    "\1\60\30\0\1\61\30\0\1\62\6\0\1\63\22\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[864];
+    int [] result = new int[936];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -293,12 +296,12 @@ public class _SimpleHTMLLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\10\0\4\1\1\11\2\1\1\11\2\1\3\11\1\1"+
-    "\1\11\1\1\1\11\2\1\2\11\1\0\1\1\1\11"+
-    "\3\0\2\11\13\0\1\11";
+    "\11\0\3\1\1\11\1\1\1\11\4\1\1\11\1\1"+
+    "\2\11\2\1\1\11\1\1\1\11\2\1\2\11\1\0"+
+    "\1\11\3\0\2\11\13\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[49];
+    int [] result = new int[51];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -639,52 +642,52 @@ public class _SimpleHTMLLexer implements FlexLexer {
             // fall through
           case 28: break;
           case 8: 
-            { return ATTRIBUTE_NAME;
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_NAME;
             } 
             // fall through
           case 29: break;
           case 9: 
-            { yybegin(WAITING_ATTR_VALUE_SQ); return ATTRIBUTE_VALUE_DEFINER_SQ;
+            { yybegin(WAITING_ATTR_VALUE); return ATTRIBUTE_ASSIGN;
             } 
             // fall through
           case 30: break;
           case 10: 
-            { yybegin(WAITING_ATTR_VALUE_DQ); return ATTRIBUTE_VALUE_DEFINER_DQ;
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_TEXT;
             } 
             // fall through
           case 31: break;
           case 11: 
-            { return EQ;
+            { yybegin(WAITING_ATTR_VALUE_SQ); return ATTRIBUTE_VALUE_DEFINER_SQ;
             } 
             // fall through
           case 32: break;
           case 12: 
-            { return ATTR_VALUE;
+            { yybegin(WAITING_ATTR_VALUE_DQ); return ATTRIBUTE_VALUE_DEFINER_DQ;
             } 
             // fall through
           case 33: break;
           case 13: 
-            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ;
+            { return ATTRIBUTE_VALUE_TEXT;
             } 
             // fall through
           case 34: break;
           case 14: 
-            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_DQ;
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_SQ;
             } 
             // fall through
           case 35: break;
           case 15: 
-            { return COMMENT_TEXT;
+            { yybegin(WAITING_ATTRIBUTE_NAME); return ATTRIBUTE_VALUE_DEFINER_DQ;
             } 
             // fall through
           case 36: break;
           case 16: 
-            { yybegin(WAITING_END_TAG_NAME); return END_TAG_START;
+            { return COMMENT_TEXT;
             } 
             // fall through
           case 37: break;
           case 17: 
-            { return EMPTY_TAG_END;
+            { yybegin(WAITING_END_TAG_NAME); return END_TAG_START;
             } 
             // fall through
           case 38: break;

@@ -32,9 +32,9 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
             }
 
             keyMap.putValue(ATTRIBUTE_NAME, SimpleHTMLHighlighterColors.ATTRIBUTE_NAME)
-            keyMap.putValue(EQ, SimpleHTMLHighlighterColors.ATTRIBUTE_ASSIGN)
+            keyMap.putValue(ATTRIBUTE_ASSIGN, SimpleHTMLHighlighterColors.ATTRIBUTE_ASSIGN)
 
-            for (type in arrayOf(ATTR_VALUE, ATTRIBUTE_VALUE_DEFINER_SQ, ATTRIBUTE_VALUE_DEFINER_DQ)) {
+            for (type in arrayOf(ATTRIBUTE_VALUE_TEXT, ATTRIBUTE_VALUE_DEFINER_SQ, ATTRIBUTE_VALUE_DEFINER_DQ)) {
                 keyMap.putValue(type, SimpleHTMLHighlighterColors.ATTRIBUTE_VALUE)
             }
 

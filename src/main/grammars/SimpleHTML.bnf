@@ -19,7 +19,7 @@
     TAG_END='>'
     END_TAG_START='</'
     EMPTY_TAG_END='/>'
-    EQ='='
+    ATTRIBUTE_ASSIGN='='
     COMMENT_START='<!--'
     COMMENT_END='-->'
     ATTRIBUTE_VALUE_DEFINER_SQ="'"
@@ -35,16 +35,20 @@ SimpleHTMLFile ::= DOCTYPE? (Tag|Comment)*
 Tag ::= NotEmptyTag|EmptyTag {
   methods=[getTagNameElement getAttributeList]
 }
-NotEmptyTag ::= TagStart (Tag|Comment|Text)* TagEnd {
+
+NotEmptyTag ::= TagStart TagContent* TagEnd {
   pin=1
   methods=[getStartTagNameElement getEndTagNameElement]
 }
+private TagContent ::= Tag|Comment|Text
+
 EmptyTag ::= TagHead '/>'
+
 private TagStart ::= TagHead '>'
-private TagHead ::= '<' START_TAG_NAME Attribute* {pin=1}
+private TagHead ::= '<' START_TAG_NAME Attribute* {pin=2}
 private TagEnd ::= '</' END_TAG_NAME '>' {pin=1}
 Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {pin=1}
-AttributeValue ::= '"' ATTR_VALUE? '"' | "'" ATTR_VALUE? "'"
+AttributeValue ::= ATTRIBUTE_VALUE_TEXT | '"' ATTRIBUTE_VALUE_TEXT? '"' | "'" ATTRIBUTE_VALUE_TEXT? "'"  {pin(".*")=1}
 Text ::= ROW_TEXT+
 
 Comment ::= '<!--' COMMENT_TEXT* '-->'  {

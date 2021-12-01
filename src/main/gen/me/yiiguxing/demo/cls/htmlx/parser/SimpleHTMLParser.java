@@ -65,60 +65,62 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "Attribute_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EQ);
+    r = consumeToken(b, ATTRIBUTE_ASSIGN);
     r = r && AttributeValue(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // '"' ATTR_VALUE? '"' | "'" ATTR_VALUE? "'"
+  // ATTRIBUTE_VALUE_TEXT | '"' ATTRIBUTE_VALUE_TEXT? '"' | "'" ATTRIBUTE_VALUE_TEXT? "'"
   public static boolean AttributeValue(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AttributeValue")) return false;
-    if (!nextTokenIs(b, "<attribute value>", ATTRIBUTE_VALUE_DEFINER_DQ, ATTRIBUTE_VALUE_DEFINER_SQ)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ATTRIBUTE_VALUE, "<attribute value>");
-    r = AttributeValue_0(b, l + 1);
+    r = consumeToken(b, ATTRIBUTE_VALUE_TEXT);
     if (!r) r = AttributeValue_1(b, l + 1);
+    if (!r) r = AttributeValue_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // '"' ATTR_VALUE? '"'
-  private static boolean AttributeValue_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AttributeValue_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+  // '"' ATTRIBUTE_VALUE_TEXT? '"'
+  private static boolean AttributeValue_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AttributeValue_1")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, ATTRIBUTE_VALUE_DEFINER_DQ);
-    r = r && AttributeValue_0_1(b, l + 1);
-    r = r && consumeToken(b, ATTRIBUTE_VALUE_DEFINER_DQ);
-    exit_section_(b, m, null, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, AttributeValue_1_1(b, l + 1));
+    r = p && consumeToken(b, ATTRIBUTE_VALUE_DEFINER_DQ) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
-  // ATTR_VALUE?
-  private static boolean AttributeValue_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AttributeValue_0_1")) return false;
-    consumeToken(b, ATTR_VALUE);
+  // ATTRIBUTE_VALUE_TEXT?
+  private static boolean AttributeValue_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AttributeValue_1_1")) return false;
+    consumeToken(b, ATTRIBUTE_VALUE_TEXT);
     return true;
   }
 
-  // "'" ATTR_VALUE? "'"
-  private static boolean AttributeValue_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AttributeValue_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+  // "'" ATTRIBUTE_VALUE_TEXT? "'"
+  private static boolean AttributeValue_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AttributeValue_2")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, ATTRIBUTE_VALUE_DEFINER_SQ);
-    r = r && AttributeValue_1_1(b, l + 1);
-    r = r && consumeToken(b, ATTRIBUTE_VALUE_DEFINER_SQ);
-    exit_section_(b, m, null, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, AttributeValue_2_1(b, l + 1));
+    r = p && consumeToken(b, ATTRIBUTE_VALUE_DEFINER_SQ) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
-  // ATTR_VALUE?
-  private static boolean AttributeValue_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "AttributeValue_1_1")) return false;
-    consumeToken(b, ATTR_VALUE);
+  // ATTRIBUTE_VALUE_TEXT?
+  private static boolean AttributeValue_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AttributeValue_2_1")) return false;
+    consumeToken(b, ATTRIBUTE_VALUE_TEXT);
     return true;
   }
 
@@ -162,7 +164,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // TagStart (Tag|Comment|Text)* TagEnd
+  // TagStart TagContent* TagEnd
   public static boolean NotEmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NotEmptyTag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
@@ -176,25 +178,15 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // (Tag|Comment|Text)*
+  // TagContent*
   private static boolean NotEmptyTag_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NotEmptyTag_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!NotEmptyTag_1_0(b, l + 1)) break;
+      if (!TagContent(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "NotEmptyTag_1", c)) break;
     }
     return true;
-  }
-
-  // Tag|Comment|Text
-  private static boolean NotEmptyTag_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NotEmptyTag_1_0")) return false;
-    boolean r;
-    r = Tag(b, l + 1);
-    if (!r) r = Comment(b, l + 1);
-    if (!r) r = Text(b, l + 1);
-    return r;
   }
 
   /* ********************************************************** */
@@ -250,6 +242,17 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // Tag|Comment|Text
+  static boolean TagContent(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "TagContent")) return false;
+    boolean r;
+    r = Tag(b, l + 1);
+    if (!r) r = Comment(b, l + 1);
+    if (!r) r = Text(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
   // '</' END_TAG_NAME '>'
   static boolean TagEnd(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagEnd")) return false;
@@ -269,8 +272,8 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeTokens(b, 1, TAG_START, START_TAG_NAME);
-    p = r; // pin = 1
+    r = consumeTokens(b, 2, TAG_START, START_TAG_NAME);
+    p = r; // pin = 2
     r = r && TagHead_2(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
