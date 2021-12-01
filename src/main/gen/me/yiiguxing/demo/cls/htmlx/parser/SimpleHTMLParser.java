@@ -63,12 +63,13 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   // '=' AttributeValue
   private static boolean Attribute_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Attribute_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, ATTRIBUTE_ASSIGN);
+    p = r; // pin = 1
     r = r && AttributeValue(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -155,12 +156,13 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   public static boolean EmptyTag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "EmptyTag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, EMPTY_TAG, null);
     r = TagHead(b, l + 1);
+    p = r; // pin = 1
     r = r && consumeToken(b, EMPTY_TAG_END);
-    exit_section_(b, m, EMPTY_TAG, r);
-    return r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
   /* ********************************************************** */
@@ -190,7 +192,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DOCTYPE? (Tag|Comment)*
+  // DOCTYPE? (Tag | Comment)*
   static boolean SimpleHTMLFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SimpleHTMLFile")) return false;
     boolean r;
@@ -208,7 +210,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (Tag|Comment)*
+  // (Tag | Comment)*
   private static boolean SimpleHTMLFile_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SimpleHTMLFile_1")) return false;
     while (true) {
@@ -219,7 +221,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // Tag|Comment
+  // Tag | Comment
   private static boolean SimpleHTMLFile_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SimpleHTMLFile_1_0")) return false;
     boolean r;
@@ -229,7 +231,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // NotEmptyTag|EmptyTag
+  // NotEmptyTag | EmptyTag
   public static boolean Tag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Tag")) return false;
     if (!nextTokenIs(b, TAG_START)) return false;
@@ -242,7 +244,7 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Tag|Comment|Text
+  // Tag | Comment | Text
   static boolean TagContent(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagContent")) return false;
     boolean r;
@@ -272,8 +274,8 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, TAG_START)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeTokens(b, 2, TAG_START, START_TAG_NAME);
-    p = r; // pin = 2
+    r = consumeTokens(b, 1, TAG_START, START_TAG_NAME);
+    p = r; // pin = 1
     r = r && TagHead_2(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
