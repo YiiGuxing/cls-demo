@@ -1,5 +1,6 @@
 package me.yiiguxing.demo.cls.htmlx.parser;
 
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
@@ -9,6 +10,8 @@ import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 %%
 
 %{
+  int nextState;
+
   public _SimpleHTMLLexer() {
     this((java.io.Reader)null);
   }
@@ -25,6 +28,8 @@ EOL=\R
 WHITE_SPACE=\s+
 
 DOCTYPE_NAME = [hH][tT][mM][lL]
+STYLE_NAME = [sS][tT][yY][lL][eE]
+SCRIPT_NAME = [sS][cC][rR][iI][pP][tT]
 
 ALPHA = [:letter:]
 DIGIT = [:digit:]
@@ -40,6 +45,9 @@ ATTR_VALUE = [^'\"\s>]+
 ATTR_VALUE_SQ = [^']+
 ATTR_VALUE_DQ = [^\"]+
 
+STYLE_CODE = ~("</" {STYLE_NAME} ">")
+SCRIPT_CODE = ~("</" {SCRIPT_NAME} ">")
+
 ROW_TEXT = [^\s<]+
 COMMENT_TEXT = [^->]+
 
@@ -52,6 +60,8 @@ COMMENT_TEXT = [^->]+
 %state WAITING_ATTR_VALUE_DQ
 %state WAITING_TEXT
 %state WAITING_COMMENT_TEXT
+%state START_STYLE_CODE
+%state START_SCRIPT_CODE
 
 %%
 <YYINITIAL> {
@@ -63,7 +73,7 @@ COMMENT_TEXT = [^->]+
 <YYINITIAL,WAITING_DOCTYPE> {
   {WHITE_SPACE}          { return WHITE_SPACE; }
 
-  {PRE_START_TAG}        { yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
+  {PRE_START_TAG}        { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
   "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   "<"                    { yybegin(YYINITIAL); return ROW_TEXT; }
 }
@@ -74,6 +84,8 @@ COMMENT_TEXT = [^->]+
 }
 
 <WAITING_START_TAG_NAME> {
+  {STYLE_NAME}           { nextState=START_STYLE_CODE; yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
+  {SCRIPT_NAME}          { nextState=START_SCRIPT_CODE; yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
   {NAME}                 { yybegin(WAITING_ATTRIBUTE_NAME); return START_TAG_NAME; }
 }
 
@@ -108,16 +120,33 @@ WAITING_ATTRIBUTE_NAME,
 WAITING_ATTR_VALUE> {
   {WHITE_SPACE}          {
                             if (yystate()!=WAITING_END_TAG_NAME)
-                                return WHITE_SPACE; yybegin(YYINITIAL);
+                                return WHITE_SPACE;
                             yybegin(YYINITIAL);
                             yypushback(yytext().length());
                          }
-  {PRE_START_TAG}        { yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
+  {PRE_START_TAG}        { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
   "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
-  ">"                    { yybegin(YYINITIAL); return TAG_END; }
-  "/>"                   { yybegin(YYINITIAL); return EMPTY_TAG_END; }
-  "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
+  ">"                    {
+                            if (yystate()==WAITING_ATTRIBUTE_NAME||yystate()==WAITING_ATTR_VALUE) {
+                                yybegin(nextState); nextState=YYINITIAL;
+                            } else {
+                                yybegin(YYINITIAL);
+                            }
+                            return TAG_END;
+                         }
+  "/>"                   { nextState=YYINITIAL; yybegin(YYINITIAL); return EMPTY_TAG_END; }
+  "<!--"                 { nextState=YYINITIAL; yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   .                      { yybegin(YYINITIAL); yypushback(yytext().length()); }
+}
+
+<START_STYLE_CODE> {
+  {STYLE_CODE}           { nextState=YYINITIAL; yybegin(YYINITIAL); yypushback(8); return STYLE_CODE; }
+  [^]                    { return STYLE_CODE; }
+}
+
+<START_SCRIPT_CODE> {
+  {SCRIPT_CODE}          { nextState=YYINITIAL; yybegin(YYINITIAL); yypushback(9); return SCRIPT_CODE; }
+  [^]                    { return SCRIPT_CODE; }
 }
 
 <WAITING_COMMENT_TEXT> {

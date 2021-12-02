@@ -32,7 +32,9 @@ public interface SimpleHTMLTypes {
   IElementType END_TAG_NAME = new SimpleHTMLTokenType("END_TAG_NAME");
   IElementType END_TAG_START = new SimpleHTMLTokenType("</");
   IElementType ROW_TEXT = new SimpleHTMLTokenType("ROW_TEXT");
+  IElementType SCRIPT_CODE = new SimpleHTMLTokenType("SCRIPT_CODE");
   IElementType START_TAG_NAME = new SimpleHTMLTokenType("START_TAG_NAME");
+  IElementType STYLE_CODE = new SimpleHTMLTokenType("STYLE_CODE");
   IElementType TAG_END = new SimpleHTMLTokenType(">");
   IElementType TAG_START = new SimpleHTMLTokenType("<");
 

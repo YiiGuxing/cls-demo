@@ -10,6 +10,8 @@ import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes
 private val MERGING_TOKENS = TokenSet.create(
     TokenType.WHITE_SPACE,
     TokenType.BAD_CHARACTER,
+    SimpleHTMLTypes.STYLE_CODE,
+    SimpleHTMLTypes.SCRIPT_CODE,
     SimpleHTMLTypes.COMMENT_TEXT,
     SimpleHTMLTypes.ROW_TEXT,
 )

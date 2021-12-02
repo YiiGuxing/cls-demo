@@ -12,6 +12,8 @@ import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.ATTR
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.COMMENT
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.DEFAULT_CODE
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.DOCTYPE
+import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.SCRIPT_CODE
+import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.STYLE_CODE
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.TAG
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLHighlighterColors.TAG_NAME
 import me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLSyntaxHighlighter
@@ -38,10 +40,20 @@ class SimpleHTMLColorSettingsPage : ColorSettingsPage {
             <HTML>
             <head>
             <title>Simple HTML Support</title>
+            <style>
+                body {
+                    color: #FAFAFA;
+                    font-size: 16px;
+                }
+            </style>
+            <script>
+                // Script code
+                console.log("Hello World!");
+            </script>
             </head>
             <body>
             <h1>Simple HTML Support</h1>
-            <p><br/><b><IMG width="18" height='12' src="images/hg.gif" />
+            <p><br/><b><IMG width="18" height='12' src="images/hg.gif">
             A simple implementation of HTML support plug-in.</b><br/><br/></p>
             
             <button disabled>Click Me!</button>
@@ -64,6 +76,8 @@ class SimpleHTMLColorSettingsPage : ColorSettingsPage {
             AttributesDescriptor("Attribute assign", ATTRIBUTE_ASSIGN),
             AttributesDescriptor("Attribute value", ATTRIBUTE_VALUE),
             AttributesDescriptor("Comment", COMMENT),
+            AttributesDescriptor("Style code", STYLE_CODE),
+            AttributesDescriptor("Script code", SCRIPT_CODE),
         )
     }
 }

@@ -44,7 +44,7 @@ NotEmptyTag ::= TagStart TagContent* TagEnd {
   pin=1
   methods=[getStartTagNameElement getEndTagNameElement]
 }
-private TagContent ::= Tag | Comment | Text
+private TagContent ::= Tag | Comment | Text | STYLE_CODE | SCRIPT_CODE
 
 EmptyTag ::= TagHead '/>' { pin=1 }
 

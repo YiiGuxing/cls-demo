@@ -49,6 +49,8 @@ class SimpleHTMLSyntaxHighlighter : SyntaxHighlighterBase() {
                 keyMap.putValue(type, SimpleHTMLHighlighterColors.COMMENT)
             }
 
+            keyMap.putValue(STYLE_CODE, SimpleHTMLHighlighterColors.STYLE_CODE)
+            keyMap.putValue(SCRIPT_CODE, SimpleHTMLHighlighterColors.SCRIPT_CODE)
             keyMap.putValue(TokenType.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER)
         }
 

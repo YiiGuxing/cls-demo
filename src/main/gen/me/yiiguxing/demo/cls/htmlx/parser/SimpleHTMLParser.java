@@ -159,19 +159,8 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, DOCTYPE, "<doctype>");
     r = consumeTokens(b, 1, DOCTYPE_START, DOCTYPE_NAME, DOCTYPE_END);
     p = r; // pin = 1
-    exit_section_(b, l, m, r, p, SimpleHTMLParser::ER);
+    exit_section_(b, l, m, r, p, SimpleHTMLParser::Recover);
     return r || p;
-  }
-
-  /* ********************************************************** */
-  // !('<')
-  static boolean ER(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ER")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NOT_);
-    r = !consumeToken(b, TAG_START);
-    exit_section_(b, l, m, r, false, null);
-    return r;
   }
 
   /* ********************************************************** */
@@ -212,6 +201,17 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "NotEmptyTag_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // !('<')
+  static boolean Recover(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Recover")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !consumeToken(b, TAG_START);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */
@@ -267,13 +267,15 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Tag | Comment | Text
+  // Tag | Comment | Text | STYLE_CODE | SCRIPT_CODE
   static boolean TagContent(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagContent")) return false;
     boolean r;
     r = Tag(b, l + 1);
     if (!r) r = Comment(b, l + 1);
     if (!r) r = Text(b, l + 1);
+    if (!r) r = consumeToken(b, STYLE_CODE);
+    if (!r) r = consumeToken(b, SCRIPT_CODE);
     return r;
   }
 

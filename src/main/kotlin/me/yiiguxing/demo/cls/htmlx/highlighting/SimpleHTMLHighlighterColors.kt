@@ -2,6 +2,7 @@ package me.yiiguxing.demo.cls.htmlx.highlighting
 
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors
+import com.intellij.openapi.editor.colors.EditorColors
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 
 object SimpleHTMLHighlighterColors {
@@ -26,6 +27,12 @@ object SimpleHTMLHighlighterColors {
 
     @JvmField
     val ATTRIBUTE_VALUE = createTextAttributesKey("HTMLX_ATTRIBUTE_VALUE", DefaultLanguageHighlighterColors.STRING)
+
+    @JvmField
+    val STYLE_CODE = createTextAttributesKey("HTMLX_STYLE_CODE", EditorColors.INJECTED_LANGUAGE_FRAGMENT)
+
+    @JvmField
+    val SCRIPT_CODE = createTextAttributesKey("HTMLX_SCRIPT_CODE", EditorColors.INJECTED_LANGUAGE_FRAGMENT)
 
     @JvmField
     val COMMENT = createTextAttributesKey("HTMLX_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT)
