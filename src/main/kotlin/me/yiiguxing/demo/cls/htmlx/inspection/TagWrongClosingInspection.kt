@@ -9,7 +9,6 @@ import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLNotEmptyTag
 class TagWrongClosingInspection : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-
         if (element is SimpleHTMLNotEmptyTag) {
             val startTagName = element.startTagNameElement ?: return
             val endTagName = element.endTagNameElement ?: return
