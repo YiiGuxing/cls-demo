@@ -85,7 +85,7 @@ class SimpleHTMLFoldingBuilder : CustomFoldingBuilder(), DumbAware {
                 ?.startOffset
                 ?: (textRange.endOffset - 1)
 
-            return TextRange(startOffset, endOffset)
+            return createTextRange(startOffset, endOffset)
         }
 
         private fun SimpleHTMLAttribute.getFoldRange(): TextRange {
@@ -109,7 +109,7 @@ class SimpleHTMLFoldingBuilder : CustomFoldingBuilder(), DumbAware {
                 ?.startOffset
                 ?: (textRange.endOffset - 1)
 
-            return TextRange(startOffset, endOffset)
+            return createTextRange(startOffset, endOffset)
         }
 
         private fun SimpleHTMLComment.getFoldRange(): TextRange {
@@ -119,7 +119,7 @@ class SimpleHTMLFoldingBuilder : CustomFoldingBuilder(), DumbAware {
                 ?.textRange
                 ?.startOffset
                 ?: (textRange.endOffset - 1)
-            return TextRange(startOffset, endOffset)
+            return createTextRange(startOffset, endOffset)
         }
 
         private fun PsiElement.addToFold(
@@ -139,6 +139,14 @@ class SimpleHTMLFoldingBuilder : CustomFoldingBuilder(), DumbAware {
             val endLine = document.getLineNumber(range.endOffset)
             if (startLine < endLine) {
                 descriptors.add(FoldingDescriptor(this, range))
+            }
+        }
+
+        private fun createTextRange(startOffset: Int, endOffset: Int): TextRange {
+            return if (startOffset in 0 until endOffset) {
+                TextRange(startOffset, endOffset)
+            } else {
+                TextRange.EMPTY_RANGE
             }
         }
 
