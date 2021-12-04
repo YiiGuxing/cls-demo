@@ -17,7 +17,7 @@ class TagWrongClosingInspection : Annotator {
                 val endTagNameElement = parent.endTagNameElement ?: return
                 val startName = element.text
                 val endName = endTagNameElement.text
-                if (startName != endName) {
+                if (!startName.equals(endName, true)) {
                     holder.newAnnotation(HighlightSeverity.ERROR, "Tag has wrong closing tag")
                         .range(element)
                         .withFix(FixTagNameIntentionAction(startName, endName))
