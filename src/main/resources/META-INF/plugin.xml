@@ -35,7 +35,7 @@
         <completion.contributor
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.completion.TagNameCompletionContributor"/>
-
+        <lang.commenter language="SimpleHTML" implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLCommenter"/>
 
     </extensions>
 
