@@ -35,6 +35,8 @@
         <completion.contributor
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.completion.TagNameCompletionContributor"/>
+        <typedHandler id="htmlxTyped"
+                      implementation="me.yiiguxing.demo.cls.htmlx.completion.SimpleHTMLTypedHandlerDelegate"/>
         <lang.commenter language="SimpleHTML" implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLCommenter"/>
         <lang.foldingBuilder language="SimpleHTML"
                              implementationClass="me.yiiguxing.demo.cls.htmlx.folding.SimpleHTMLFoldingBuilder"/>
