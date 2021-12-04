@@ -21,7 +21,7 @@
                   extensions="htmlx"/>
         <lang.parserDefinition
                 language="SimpleHTML"
-                implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLParserDefinition"/>
+                implementationClass="me.yiiguxing.demo.cls.htmlx.parser.SimpleHTMLParserDefinition"/>
         <lang.syntaxHighlighterFactory
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.highlighting.SimpleHTMLSyntaxHighlighterFactory"/>
@@ -36,6 +36,8 @@
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.completion.TagNameCompletionContributor"/>
         <lang.commenter language="SimpleHTML" implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLCommenter"/>
+        <lang.foldingBuilder language="SimpleHTML"
+                             implementationClass="me.yiiguxing.demo.cls.htmlx.folding.SimpleHTMLFoldingBuilder"/>
 
     </extensions>
 
