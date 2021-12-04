@@ -4,6 +4,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
+import me.yiiguxing.demo.cls.htmlx.SIMPLE_HTML_FILE_EXTENSION
 import me.yiiguxing.demo.cls.htmlx.SimpleHTMLFile
 import me.yiiguxing.demo.cls.htmlx.SimpleHTMLFileType
 
@@ -22,7 +23,7 @@ class SimpleHTMLElementFactory(private val project: Project) {
 
     private fun createSimpleHTMLFileFromText(text: String): SimpleHTMLFile {
         return PsiFileFactory.getInstance(project)
-            .createFileFromText("dummy.htmlx", SimpleHTMLFileType, text) as SimpleHTMLFile
+            .createFileFromText("dummy.$SIMPLE_HTML_FILE_EXTENSION", SimpleHTMLFileType, text) as SimpleHTMLFile
     }
 
     companion object {

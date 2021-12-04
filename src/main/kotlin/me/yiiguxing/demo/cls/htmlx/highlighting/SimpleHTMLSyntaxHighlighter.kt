@@ -7,7 +7,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.containers.MultiMap
-import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLexer
+import me.yiiguxing.demo.cls.htmlx.parser.SimpleHTMLLexer
 import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*
 
 

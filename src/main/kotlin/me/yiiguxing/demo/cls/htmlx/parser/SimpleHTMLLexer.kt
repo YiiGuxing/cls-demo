@@ -1,10 +1,9 @@
-package me.yiiguxing.demo.cls.htmlx
+package me.yiiguxing.demo.cls.htmlx.parser
 
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.MergingLexerAdapter
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.TokenSet
-import me.yiiguxing.demo.cls.htmlx.parser._SimpleHTMLLexer
 import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes
 
 private val MERGING_TOKENS = TokenSet.create(

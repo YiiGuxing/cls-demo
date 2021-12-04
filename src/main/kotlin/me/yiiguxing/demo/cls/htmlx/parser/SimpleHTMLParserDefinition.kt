@@ -1,4 +1,4 @@
-package me.yiiguxing.demo.cls.htmlx
+package me.yiiguxing.demo.cls.htmlx.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
@@ -10,7 +10,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import me.yiiguxing.demo.cls.htmlx.parser.SimpleHTMLParser
+import me.yiiguxing.demo.cls.htmlx.SimpleHTMLFile
+import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLanguage
 import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*
 
 class SimpleHTMLParserDefinition : ParserDefinition {

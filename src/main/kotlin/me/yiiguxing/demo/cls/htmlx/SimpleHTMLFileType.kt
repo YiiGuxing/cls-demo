@@ -10,7 +10,7 @@ object SimpleHTMLFileType : LanguageFileType(SimpleHTMLLanguage) {
 
     override fun getDescription(): String = "Simple HTML File"
 
-    override fun getDefaultExtension(): String = "htmlx"
+    override fun getDefaultExtension(): String = SIMPLE_HTML_FILE_EXTENSION
 
     override fun getIcon(): Icon = Icons.htmlx
 }

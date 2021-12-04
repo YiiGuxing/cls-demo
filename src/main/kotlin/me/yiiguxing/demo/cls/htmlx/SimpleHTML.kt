@@ -2,6 +2,8 @@ package me.yiiguxing.demo.cls.htmlx
 
 import java.util.*
 
+const val SIMPLE_HTML_FILE_EXTENSION = "htmlx"
+
 val HTML_TAGS: Array<out String> = arrayOf(
     "a", "abbr", "acronym", "address", "applet", "area", "article", "aside", "audio", "b", "base", "basefont", "bdi",
     "bdo", "bgsound", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite",
@@ -18,4 +20,3 @@ val HTML_TAGS: Array<out String> = arrayOf(
 
 val String.isHtmlTag: Boolean
     get() = Arrays.binarySearch(HTML_TAGS, lowercase()) >= 0
-
