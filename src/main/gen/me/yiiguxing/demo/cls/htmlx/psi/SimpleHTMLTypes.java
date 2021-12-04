@@ -12,8 +12,10 @@ public interface SimpleHTMLTypes {
   IElementType ATTRIBUTE_VALUE = new SimpleHTMLElementType("ATTRIBUTE_VALUE");
   IElementType COMMENT = new SimpleHTMLElementType("COMMENT");
   IElementType DOCTYPE = new SimpleHTMLElementType("DOCTYPE");
+  IElementType DOCUMENT = new SimpleHTMLElementType("DOCUMENT");
   IElementType EMPTY_TAG = new SimpleHTMLElementType("EMPTY_TAG");
   IElementType NOT_EMPTY_TAG = new SimpleHTMLElementType("NOT_EMPTY_TAG");
+  IElementType PROLOG = new SimpleHTMLElementType("PROLOG");
   IElementType TAG = new SimpleHTMLElementType("TAG");
   IElementType TEXT = new SimpleHTMLElementType("TEXT");
 
@@ -53,11 +55,17 @@ public interface SimpleHTMLTypes {
       else if (type == DOCTYPE) {
         return new SimpleHTMLDoctypeImpl(node);
       }
+      else if (type == DOCUMENT) {
+        return new SimpleHTMLDocumentImpl(node);
+      }
       else if (type == EMPTY_TAG) {
         return new SimpleHTMLEmptyTagImpl(node);
       }
       else if (type == NOT_EMPTY_TAG) {
         return new SimpleHTMLNotEmptyTagImpl(node);
+      }
+      else if (type == PROLOG) {
+        return new SimpleHTMLPrologImpl(node);
       }
       else if (type == TEXT) {
         return new SimpleHTMLTextImpl(node);

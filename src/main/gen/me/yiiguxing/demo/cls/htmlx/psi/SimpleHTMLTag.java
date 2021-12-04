@@ -4,11 +4,18 @@ package me.yiiguxing.demo.cls.htmlx.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 
-public interface SimpleHTMLTag extends SimpleHTMLElement {
+public interface SimpleHTMLTag extends PsiNamedElement, SimpleHTMLElement {
 
   @Nullable
   PsiElement getTagNameElement();
+
+  @NotNull
+  String getName();
+
+  @NotNull
+  PsiElement setName(@NotNull String name);
 
   @NotNull
   List<SimpleHTMLAttribute> getAttributeList();

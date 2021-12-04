@@ -31,13 +31,18 @@
   extends(".*Tag")=Tag
 }
 
-SimpleHTMLFile ::= Doctype? (Tag | Comment)*
+SimpleHTMLFile ::= Document
+
+Document ::= Prolog  DocContents? { methods=[getRootTag] }
+Prolog ::= Doctype? Comment*
+private DocContents ::= Tag (Tag | Comment)*
 
 Doctype ::= DOCTYPE_START DOCTYPE_NAME DOCTYPE_END { pin=1 recoverWhile="Recover" }
-private Recover ::= !('<')
+private Recover ::= !('<' | '<!--')
 
 Tag ::= NotEmptyTag | EmptyTag {
-  methods=[getTagNameElement getAttributeList]
+  implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiNamedElement"]
+  methods=[getTagNameElement getName setName getAttributeList]
 }
 
 NotEmptyTag ::= TagStart TagContent* TagEnd {
@@ -50,7 +55,11 @@ EmptyTag ::= TagHead '/>' { pin=1 }
 
 private TagStart ::= TagHead '>'
 private TagHead ::= '<' START_TAG_NAME Attribute* { pin=1 }
-Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? { pin(".*")=1 }
+Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {
+  pin(".*")=1
+  implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiNameIdentifierOwner"]
+  methods=[setName getName getAttributeNameElement getNameIdentifier]
+}
 AttributeValue ::= ATTRIBUTE_VALUE_TEXT | '"' ATTRIBUTE_VALUE_TEXT? '"' | "'" ATTRIBUTE_VALUE_TEXT? "'" {
   pin(".*")=1
 }
@@ -60,6 +69,6 @@ Text ::= ROW_TEXT+
 
 Comment ::= '<!--' COMMENT_TEXT* '-->'  {
     pin=1
+    mixin="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLCommentBase"
     implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiComment"]
-    extends="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLCommentBase"
 }

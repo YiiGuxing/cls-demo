@@ -152,6 +152,39 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // Tag (Tag | Comment)*
+  static boolean DocContents(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DocContents")) return false;
+    if (!nextTokenIs(b, TAG_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = Tag(b, l + 1);
+    r = r && DocContents_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (Tag | Comment)*
+  private static boolean DocContents_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DocContents_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!DocContents_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "DocContents_1", c)) break;
+    }
+    return true;
+  }
+
+  // Tag | Comment
+  private static boolean DocContents_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DocContents_1_0")) return false;
+    boolean r;
+    r = Tag(b, l + 1);
+    if (!r) r = Comment(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
   // DOCTYPE_START DOCTYPE_NAME DOCTYPE_END
   public static boolean Doctype(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Doctype")) return false;
@@ -161,6 +194,25 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
     p = r; // pin = 1
     exit_section_(b, l, m, r, p, SimpleHTMLParser::Recover);
     return r || p;
+  }
+
+  /* ********************************************************** */
+  // Prolog  DocContents?
+  public static boolean Document(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Document")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, DOCUMENT, "<document>");
+    r = Prolog(b, l + 1);
+    r = r && Document_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // DocContents?
+  private static boolean Document_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Document_1")) return false;
+    DocContents(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -204,53 +256,59 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // !('<')
-  static boolean Recover(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Recover")) return false;
+  // Doctype? Comment*
+  public static boolean Prolog(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Prolog")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NOT_);
-    r = !consumeToken(b, TAG_START);
+    Marker m = enter_section_(b, l, _NONE_, PROLOG, "<prolog>");
+    r = Prolog_0(b, l + 1);
+    r = r && Prolog_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // Doctype? (Tag | Comment)*
-  static boolean SimpleHTMLFile(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SimpleHTMLFile")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = SimpleHTMLFile_0(b, l + 1);
-    r = r && SimpleHTMLFile_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // Doctype?
-  private static boolean SimpleHTMLFile_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SimpleHTMLFile_0")) return false;
+  private static boolean Prolog_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Prolog_0")) return false;
     Doctype(b, l + 1);
     return true;
   }
 
-  // (Tag | Comment)*
-  private static boolean SimpleHTMLFile_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SimpleHTMLFile_1")) return false;
+  // Comment*
+  private static boolean Prolog_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Prolog_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!SimpleHTMLFile_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "SimpleHTMLFile_1", c)) break;
+      if (!Comment(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "Prolog_1", c)) break;
     }
     return true;
   }
 
-  // Tag | Comment
-  private static boolean SimpleHTMLFile_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SimpleHTMLFile_1_0")) return false;
+  /* ********************************************************** */
+  // !('<' | '<!--')
+  static boolean Recover(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Recover")) return false;
     boolean r;
-    r = Tag(b, l + 1);
-    if (!r) r = Comment(b, l + 1);
+    Marker m = enter_section_(b, l, _NOT_);
+    r = !Recover_0(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // '<' | '<!--'
+  private static boolean Recover_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Recover_0")) return false;
+    boolean r;
+    r = consumeToken(b, TAG_START);
+    if (!r) r = consumeToken(b, COMMENT_START);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // Document
+  static boolean SimpleHTMLFile(PsiBuilder b, int l) {
+    return Document(b, l + 1);
   }
 
   /* ********************************************************** */

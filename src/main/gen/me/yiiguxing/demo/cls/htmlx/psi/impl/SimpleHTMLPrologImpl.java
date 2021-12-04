@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public abstract class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements SimpleHTMLTag {
+public class SimpleHTMLPrologImpl extends SimpleHTMLElementBase implements SimpleHTMLProlog {
 
-  public SimpleHTMLTagImpl(@NotNull ASTNode node) {
+  public SimpleHTMLPrologImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull SimpleHTMLVisitor visitor) {
-    visitor.visitTag(this);
+    visitor.visitProlog(this);
   }
 
   @Override
@@ -27,27 +27,15 @@ public abstract class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements
   }
 
   @Override
+  @NotNull
+  public List<SimpleHTMLComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLComment.class);
+  }
+
+  @Override
   @Nullable
-  public PsiElement getTagNameElement() {
-    return SimpleHTMLPsiImplUtil.getTagNameElement(this);
-  }
-
-  @Override
-  @NotNull
-  public String getName() {
-    return SimpleHTMLPsiImplUtil.getName(this);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement setName(@NotNull String name) {
-    return SimpleHTMLPsiImplUtil.setName(this, name);
-  }
-
-  @Override
-  @NotNull
-  public List<SimpleHTMLAttribute> getAttributeList() {
-    return SimpleHTMLPsiImplUtil.getAttributeList(this);
+  public SimpleHTMLDoctype getDoctype() {
+    return findChildByClass(SimpleHTMLDoctype.class);
   }
 
 }

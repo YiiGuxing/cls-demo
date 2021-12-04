@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public class SimpleHTMLAttributeImpl extends SimpleHTMLElementBase implements SimpleHTMLAttribute {
+public class SimpleHTMLDocumentImpl extends SimpleHTMLElementBase implements SimpleHTMLDocument {
 
-  public SimpleHTMLAttributeImpl(@NotNull ASTNode node) {
+  public SimpleHTMLDocumentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull SimpleHTMLVisitor visitor) {
-    visitor.visitAttribute(this);
+    visitor.visitDocument(this);
   }
 
   @Override
@@ -27,33 +27,27 @@ public class SimpleHTMLAttributeImpl extends SimpleHTMLElementBase implements Si
   }
 
   @Override
+  @NotNull
+  public List<SimpleHTMLComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLComment.class);
+  }
+
+  @Override
+  @NotNull
+  public SimpleHTMLProlog getProlog() {
+    return findNotNullChildByClass(SimpleHTMLProlog.class);
+  }
+
+  @Override
+  @NotNull
+  public List<SimpleHTMLTag> getTagList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SimpleHTMLTag.class);
+  }
+
+  @Override
   @Nullable
-  public SimpleHTMLAttributeValue getAttributeValue() {
-    return findChildByClass(SimpleHTMLAttributeValue.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement setName(@NotNull String name) {
-    return SimpleHTMLPsiImplUtil.setName(this, name);
-  }
-
-  @Override
-  @NotNull
-  public String getName() {
-    return SimpleHTMLPsiImplUtil.getName(this);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getAttributeNameElement() {
-    return SimpleHTMLPsiImplUtil.getAttributeNameElement(this);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getNameIdentifier() {
-    return SimpleHTMLPsiImplUtil.getNameIdentifier(this);
+  public SimpleHTMLTag getRootTag() {
+    return SimpleHTMLPsiImplUtil.getRootTag(this);
   }
 
 }

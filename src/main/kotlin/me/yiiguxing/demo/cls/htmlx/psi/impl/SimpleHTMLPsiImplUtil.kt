@@ -2,16 +2,14 @@ package me.yiiguxing.demo.cls.htmlx.psi.impl
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLAttribute
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLNotEmptyTag
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTag
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes
+import com.intellij.psi.util.elementType
+import me.yiiguxing.demo.cls.htmlx.psi.*
 
 object SimpleHTMLPsiImplUtil {
 
     @JvmStatic
-    fun getAttributeList(tag: SimpleHTMLTag): List<SimpleHTMLAttribute> {
-        return PsiTreeUtil.getChildrenOfTypeAsList(tag, SimpleHTMLAttribute::class.java)
+    fun getRootTag(document: SimpleHTMLDocument): SimpleHTMLTag? {
+        return document.tagList.firstOrNull()
     }
 
     @JvmStatic
@@ -25,6 +23,11 @@ object SimpleHTMLPsiImplUtil {
         }
 
         return null
+    }
+
+    @JvmStatic
+    fun getName(tag: SimpleHTMLTag): String {
+        return getTagNameElement(tag)?.text ?: ""
     }
 
     @JvmStatic
@@ -44,5 +47,54 @@ object SimpleHTMLPsiImplUtil {
 
         return null
     }
+
+
+    @JvmStatic
+    fun setName(tag: SimpleHTMLTag, name: String): PsiElement {
+        val oldStartTagName = getTagNameElement(tag)?.node
+        val oldEndTagName = (tag as? SimpleHTMLNotEmptyTag)?.let { getEndTagNameElement(it) }?.node
+
+        if (oldStartTagName != null || oldEndTagName != null) {
+            val dummyTag = SimpleHTMLElementFactory.getInstance(tag.project).createTagElement(name)
+            oldStartTagName?.let { tag.node.replaceChild(it, dummyTag.startTagNameElement!!.node) }
+            oldEndTagName?.let { tag.node.replaceChild(it, dummyTag.endTagNameElement!!.node) }
+        }
+
+        return tag
+    }
+
+    @JvmStatic
+    fun getAttributeList(tag: SimpleHTMLTag): List<SimpleHTMLAttribute> {
+        return PsiTreeUtil.getChildrenOfTypeAsList(tag, SimpleHTMLAttribute::class.java)
+    }
+
+    @JvmStatic
+    fun getAttributeNameElement(attribute: SimpleHTMLAttribute): PsiElement {
+        val attributeNameElement = attribute.firstChild
+        assert(attributeNameElement != null && attributeNameElement.elementType == SimpleHTMLTypes.ATTRIBUTE_NAME)
+        return attributeNameElement
+    }
+
+    @JvmStatic
+    fun getNameIdentifier(attribute: SimpleHTMLAttribute): PsiElement {
+        return getAttributeNameElement(attribute)
+    }
+
+    @JvmStatic
+    fun getName(attribute: SimpleHTMLAttribute): String {
+        return getAttributeNameElement(attribute).text
+    }
+
+    @JvmStatic
+    fun setName(attribute: SimpleHTMLAttribute, name: String): PsiElement {
+        val old = getAttributeNameElement(attribute).node
+        if (old != null) {
+            val nameElement = SimpleHTMLElementFactory.getInstance(attribute.project).createAttributeNameElement(name)
+            attribute.node.replaceChild(old, nameElement.node)
+        }
+
+        return attribute
+    }
+
 
 }
