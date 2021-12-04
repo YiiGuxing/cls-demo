@@ -32,6 +32,9 @@
                    implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagWrongClosingInspection"/>
         <annotator language="SimpleHTML"
                    implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagNameInspection"/>
+        <completion.contributor
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.completion.TagNameCompletionContributor"/>
 
 
     </extensions>

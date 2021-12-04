@@ -2,7 +2,7 @@ package me.yiiguxing.demo.cls.htmlx
 
 import java.util.*
 
-val HTML_TAGS = arrayOf(
+val HTML_TAGS: Array<out String> = arrayOf(
     "a", "abbr", "acronym", "address", "applet", "area", "article", "aside", "audio", "b", "base", "basefont", "bdi",
     "bdo", "bgsound", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite",
     "code", "col", "colgroup", "content", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "dir", "div",
