@@ -53,7 +53,7 @@ class SimpleHTMLColorSettingsPage : ColorSettingsPage {
             </head>
             <body>
             <h1>Simple HTML Support</h1>
-            <p><br/><b><IMG width="18" height='12' src="images/hg.gif">
+            <p><br/><b><IMG width="18" height='12' src="images/hg.gif"/>
             A simple implementation of HTML support plug-in.</b><br/><br/></p>
             
             <button disabled>Click Me!</button>
