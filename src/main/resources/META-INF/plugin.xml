@@ -14,11 +14,13 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="Simple HTML File"
-                  implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLFileType"
-                  fieldName="INSTANCE"
-                  language="SimpleHTML"
-                  extensions="htmlx"/>
+
+        <fileType
+                name="Simple HTML File"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLFileType"
+                fieldName="INSTANCE"
+                language="SimpleHTML"
+                extensions="htmlx"/>
         <lang.parserDefinition
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.parser.SimpleHTMLParserDefinition"/>
@@ -28,18 +30,25 @@
         <colorSettingsPage implementation="me.yiiguxing.demo.cls.htmlx.ui.SimpleHTMLColorSettingsPage"/>
         <additionalTextAttributes scheme="Default" file="colorSchemes/simple-html-default.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colorSchemes/simple-html-darcula.xml"/>
-        <annotator language="SimpleHTML"
-                   implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagWrongClosingInspection"/>
-        <annotator language="SimpleHTML"
-                   implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagNameInspection"/>
+        <annotator
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagWrongClosingInspection"/>
+        <annotator
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.inspection.TagNameInspection"/>
         <completion.contributor
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.completion.TagNameCompletionContributor"/>
-        <typedHandler id="htmlxTyped"
-                      implementation="me.yiiguxing.demo.cls.htmlx.completion.SimpleHTMLTypedHandlerDelegate"/>
+        <typedHandler
+                id="htmlxTyped"
+                implementation="me.yiiguxing.demo.cls.htmlx.completion.SimpleHTMLTypedHandlerDelegate"/>
         <lang.commenter language="SimpleHTML" implementationClass="me.yiiguxing.demo.cls.htmlx.SimpleHTMLCommenter"/>
-        <lang.foldingBuilder language="SimpleHTML"
-                             implementationClass="me.yiiguxing.demo.cls.htmlx.folding.SimpleHTMLFoldingBuilder"/>
+        <lang.foldingBuilder
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.folding.SimpleHTMLFoldingBuilder"/>
+        <lang.psiStructureViewFactory
+                language="SimpleHTML"
+                implementationClass="me.yiiguxing.demo.cls.htmlx.structureView.SimpleHTMLStructureViewFactory"/>
 
     </extensions>
 
