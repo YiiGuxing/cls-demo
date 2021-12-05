@@ -12,7 +12,7 @@ import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import me.yiiguxing.demo.cls.htmlx.SimpleHTMLFile
 import me.yiiguxing.demo.cls.htmlx.SimpleHTMLLanguage
-import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*
+import me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.Factory
 
 class SimpleHTMLParserDefinition : ParserDefinition {
 
@@ -24,7 +24,7 @@ class SimpleHTMLParserDefinition : ParserDefinition {
 
     override fun getCommentTokens(): TokenSet = TokenSet.EMPTY
 
-    override fun getStringLiteralElements(): TokenSet = STRING_LITERALS
+    override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
 
     override fun createElement(node: ASTNode): PsiElement = Factory.createElement(node)
 
@@ -32,8 +32,6 @@ class SimpleHTMLParserDefinition : ParserDefinition {
 
     companion object {
         val FILE = IFileElementType(SimpleHTMLLanguage)
-
-        val STRING_LITERALS = TokenSet.create(STYLE_CODE, SCRIPT_CODE)
     }
 
 }

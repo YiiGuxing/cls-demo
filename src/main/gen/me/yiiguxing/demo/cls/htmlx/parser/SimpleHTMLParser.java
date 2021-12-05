@@ -325,15 +325,13 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Tag | Comment | Text | STYLE_CODE | SCRIPT_CODE
+  // Tag | Comment | Text
   static boolean TagContent(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "TagContent")) return false;
     boolean r;
     r = Tag(b, l + 1);
     if (!r) r = Comment(b, l + 1);
     if (!r) r = Text(b, l + 1);
-    if (!r) r = consumeToken(b, STYLE_CODE);
-    if (!r) r = consumeToken(b, SCRIPT_CODE);
     return r;
   }
 
@@ -389,19 +387,30 @@ public class SimpleHTMLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ROW_TEXT+
+  // ROW_TEXT+ | STYLE_CODE | SCRIPT_CODE
   public static boolean Text(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Text")) return false;
-    if (!nextTokenIs(b, ROW_TEXT)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TEXT, "<text>");
+    r = Text_0(b, l + 1);
+    if (!r) r = consumeToken(b, STYLE_CODE);
+    if (!r) r = consumeToken(b, SCRIPT_CODE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ROW_TEXT+
+  private static boolean Text_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Text_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ROW_TEXT);
     while (r) {
       int c = current_position_(b);
       if (!consumeToken(b, ROW_TEXT)) break;
-      if (!empty_element_parsed_guard_(b, "Text", c)) break;
+      if (!empty_element_parsed_guard_(b, "Text_0", c)) break;
     }
-    exit_section_(b, m, TEXT, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 

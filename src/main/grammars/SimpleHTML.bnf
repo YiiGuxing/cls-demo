@@ -49,7 +49,7 @@ NotEmptyTag ::= TagStart TagContent* TagEnd {
   pin=1
   methods=[getStartTagNameElement getEndTagNameElement]
 }
-private TagContent ::= Tag | Comment | Text | STYLE_CODE | SCRIPT_CODE
+private TagContent ::= Tag | Comment | Text
 
 EmptyTag ::= TagHead '/>' { pin=1 }
 
@@ -65,7 +65,7 @@ AttributeValue ::= ATTRIBUTE_VALUE_TEXT | '"' ATTRIBUTE_VALUE_TEXT? '"' | "'" AT
 }
 private TagEnd ::= '</' END_TAG_NAME '>' { pin=1 }
 
-Text ::= ROW_TEXT+
+Text ::= ROW_TEXT+ | STYLE_CODE | SCRIPT_CODE
 
 Comment ::= '<!--' COMMENT_TEXT* '-->'  {
     pin=1
