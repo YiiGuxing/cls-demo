@@ -41,7 +41,7 @@ ATTRIBUTE_NAME = ({NAME_BODY})+
 
 PRE_START_TAG = "<" {NAME_START}
 
-ATTR_VALUE = [^'\"\s>]+
+ATTR_VALUE = [^'\"\s>] [^\s>]*
 ATTR_VALUE_SQ = [^']+
 ATTR_VALUE_DQ = [^\"]+
 
