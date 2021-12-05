@@ -50,6 +50,8 @@
                 language="SimpleHTML"
                 implementationClass="me.yiiguxing.demo.cls.htmlx.structureView.SimpleHTMLStructureViewFactory"/>
 
+        <multiHostInjector implementation="me.yiiguxing.demo.cls.htmlx.SimpleHTMLCssAndScriptInjector"/>
+
     </extensions>
 
 </idea-plugin>
