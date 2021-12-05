@@ -39,6 +39,8 @@ NAME_BODY = {NAME_START} | {DIGIT} | "-"
 NAME = {NAME_START} ({NAME_BODY}) *
 ATTRIBUTE_NAME = ({NAME_BODY})+
 
+PRE_START_TAG = "<" {NAME_START}
+
 ATTR_VALUE = [^'\"\s>]+
 ATTR_VALUE_SQ = [^']+
 ATTR_VALUE_DQ = [^\"]+
@@ -71,7 +73,7 @@ COMMENT_TEXT = [^->]+
 <YYINITIAL,WAITING_DOCTYPE> {
   {WHITE_SPACE}          { return WHITE_SPACE; }
 
-  "<" / {NAME_START}     { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  {PRE_START_TAG}        { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
   "<!--"                 { yybegin(WAITING_COMMENT_TEXT); return COMMENT_START; }
   "<"                    { yybegin(YYINITIAL); return ROW_TEXT; }
 }
@@ -122,7 +124,7 @@ WAITING_ATTR_VALUE> {
                             yybegin(YYINITIAL);
                             yypushback(yytext().length());
                          }
-  "<" / {NAME_START}     { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); return TAG_START; }
+  {PRE_START_TAG}        { nextState=YYINITIAL; yybegin(WAITING_START_TAG_NAME); yypushback(1); return TAG_START; }
   "</"                   { yybegin(WAITING_END_TAG_NAME); return END_TAG_START; }
   ">"                    {
                             if (yystate()==WAITING_ATTRIBUTE_NAME||yystate()==WAITING_ATTR_VALUE) {
