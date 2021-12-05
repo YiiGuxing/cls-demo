@@ -26,4 +26,10 @@ public class SimpleHTMLAttributeValueImpl extends SimpleHTMLElementBase implemen
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public String getValue() {
+    return SimpleHTMLPsiImplUtil.getValue(this);
+  }
+
 }

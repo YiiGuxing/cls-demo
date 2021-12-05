@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public class SimpleHTMLTextImpl extends SimpleHTMLElementBase implements SimpleHTMLText {
+public class SimpleHTMLTextImpl extends SimpleHTMLTextMixin implements SimpleHTMLText {
 
   public SimpleHTMLTextImpl(@NotNull ASTNode node) {
     super(node);

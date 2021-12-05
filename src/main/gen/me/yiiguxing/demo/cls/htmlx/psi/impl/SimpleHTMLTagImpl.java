@@ -50,4 +50,10 @@ public abstract class SimpleHTMLTagImpl extends SimpleHTMLElementBase implements
     return SimpleHTMLPsiImplUtil.getAttributeList(this);
   }
 
+  @Override
+  @Nullable
+  public String getAttributeValue(@NotNull String name) {
+    return SimpleHTMLPsiImplUtil.getAttributeValue(this, name);
+  }
+
 }

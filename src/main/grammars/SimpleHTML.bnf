@@ -42,7 +42,7 @@ private Recover ::= !('<' | '<!--')
 
 Tag ::= NotEmptyTag | EmptyTag {
   implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiNamedElement"]
-  methods=[getTagNameElement getName setName getAttributeList]
+  methods=[getTagNameElement getName setName getAttributeList getAttributeValue]
 }
 
 NotEmptyTag ::= TagStart TagContent* TagEnd {
@@ -62,13 +62,17 @@ Attribute ::= ATTRIBUTE_NAME ('=' AttributeValue)? {
 }
 AttributeValue ::= ATTRIBUTE_VALUE_TEXT | '"' ATTRIBUTE_VALUE_TEXT? '"' | "'" ATTRIBUTE_VALUE_TEXT? "'" {
   pin(".*")=1
+  methods=[getValue]
 }
 private TagEnd ::= '</' END_TAG_NAME '>' { pin=1 }
 
-Text ::= ROW_TEXT+ | STYLE_CODE | SCRIPT_CODE
+Text ::= ROW_TEXT+ | STYLE_CODE | SCRIPT_CODE {
+  mixin="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLTextMixin"
+  implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiLanguageInjectionHost"]
+}
 
 Comment ::= '<!--' COMMENT_TEXT* '-->'  {
     pin=1
-    mixin="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLCommentBase"
+    mixin="me.yiiguxing.demo.cls.htmlx.psi.impl.SimpleHTMLCommentMixin"
     implements=["me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLElement" "com.intellij.psi.PsiComment"]
 }

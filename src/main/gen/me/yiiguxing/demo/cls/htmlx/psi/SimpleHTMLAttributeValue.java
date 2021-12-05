@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SimpleHTMLAttributeValue extends SimpleHTMLElement {
 
+  @Nullable
+  String getValue();
+
 }

@@ -20,4 +20,7 @@ public interface SimpleHTMLTag extends PsiNamedElement, SimpleHTMLElement {
   @NotNull
   List<SimpleHTMLAttribute> getAttributeList();
 
+  @Nullable
+  String getAttributeValue(@NotNull String name);
+
 }

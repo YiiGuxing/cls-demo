@@ -64,6 +64,21 @@ object SimpleHTMLPsiImplUtil {
     }
 
     @JvmStatic
+    fun getAttributeValue(tag: SimpleHTMLTag, name: String): String? {
+        var child: PsiElement? = tag.firstChild
+        while (child != null) {
+            (child as? SimpleHTMLAttribute)?.let {
+                if (it.name.equals(name, true)) {
+                    return@getAttributeValue it.attributeValue?.value
+                }
+            }
+            child = child.nextSibling
+        }
+
+        return null
+    }
+
+    @JvmStatic
     fun getAttributeList(tag: SimpleHTMLTag): List<SimpleHTMLAttribute> {
         return PsiTreeUtil.getChildrenOfTypeAsList(tag, SimpleHTMLAttribute::class.java)
     }
@@ -94,6 +109,11 @@ object SimpleHTMLPsiImplUtil {
         }
 
         return attribute
+    }
+
+    @JvmStatic
+    fun getValue(attributeValue: SimpleHTMLAttributeValue): String? {
+        return attributeValue.node.findChildByType(SimpleHTMLTypes.ATTRIBUTE_VALUE_TEXT)?.text
     }
 
 

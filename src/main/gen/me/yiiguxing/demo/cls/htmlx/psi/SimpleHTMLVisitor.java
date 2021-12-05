@@ -5,6 +5,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.PsiNamedElement;
 
 public class SimpleHTMLVisitor extends PsiElementVisitor {
@@ -49,6 +50,7 @@ public class SimpleHTMLVisitor extends PsiElementVisitor {
 
   public void visitText(@NotNull SimpleHTMLText o) {
     visitElement(o);
+    // visitPsiLanguageInjectionHost(o);
   }
 
   public void visitPsiNamedElement(@NotNull PsiNamedElement o) {

@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static me.yiiguxing.demo.cls.htmlx.psi.SimpleHTMLTypes.*;
 import me.yiiguxing.demo.cls.htmlx.psi.*;
 
-public class SimpleHTMLCommentImpl extends SimpleHTMLCommentBase implements SimpleHTMLComment {
+public class SimpleHTMLCommentImpl extends SimpleHTMLCommentMixin implements SimpleHTMLComment {
 
   public SimpleHTMLCommentImpl(@NotNull ASTNode node) {
     super(node);
